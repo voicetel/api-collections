@@ -1,0 +1,29 @@
+meta {
+  name: Orders · Place order
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/v2.2/orders
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  ~Idempotency-Key: 9c8f4a-001
+}
+
+body:json {
+{
+  "numbers": []
+}
+}
+
+docs {
+**Order new telephone numbers**
+Places an the number order for the listed numbers and adds them to the authenticated account. Charges accounts.cash by accounts.did × len(numbers). Supports the Idempotency-Key header for safe retries (the cached response is returned for 24h on replay).
+
+OperationId: `orderCreate`
+}

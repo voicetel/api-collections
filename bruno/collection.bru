@@ -1,0 +1,19 @@
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+vars {
+  baseUrl: https://api.voicetel.com
+}
+
+docs {
+# VoiceTel API — Bruno Collection
+
+Version 2.2.10. All endpoints are documented at https://voicetel.com/docs/api/v2.2/.
+
+Bearer auth is wired at the collection level. After a successful `Account · Login (get API key)` the `apiKey` variable is auto-populated by the post-response script.
+}

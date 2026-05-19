@@ -1,0 +1,24 @@
+meta {
+  name: Support · List ticket messages
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/v2.2/support/tickets/:id/messages
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Get ticket threads**
+Returns all message threads for a ticket. Customers can only view their own tickets.
+
+Note: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.
+
+OperationId: `supportTicketMessages`
+}

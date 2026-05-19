@@ -1,0 +1,29 @@
+meta {
+  name: Auth · Update policy
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/v2.2/auth
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "password": "abc123",
+  "authType": 0
+}
+}
+
+docs {
+**Update authentication settings**
+Updates the account authentication type and/or password.
+
+OperationId: `authPut`
+}

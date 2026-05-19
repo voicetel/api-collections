@@ -1,0 +1,22 @@
+meta {
+  name: Lookup · CNAM
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/cnam/:number
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**CNAM lookup**
+Returns the Caller ID Name registered for the given 10-digit telephone number. Billed per lookup. Requires CNAM service to be enabled.
+
+OperationId: `cnamLookup`
+}

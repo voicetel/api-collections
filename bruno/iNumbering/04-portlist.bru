@@ -1,0 +1,18 @@
+meta {
+  name: Ports · List
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/v2.2/ports
+  body: none
+  auth: inherit
+}
+
+docs {
+**List port-in records**
+Returns every port-in record submitted by the authenticated account, newest first.
+
+OperationId: `portList`
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Account · Recurring charges
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/v2.2/account/recurring-charges
+  body: none
+  auth: inherit
+}
+
+docs {
+**Monthly recurring charges**
+Returns current MRC broken down by service plus a total. Rate limited: 6 requests per hour per IP.
+
+⚠️ Rate-limited (6/hr/IP).
+
+OperationId: `accountRecurringCharges`
+}

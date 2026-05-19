@@ -1,0 +1,32 @@
+meta {
+  name: Numbers · Set route (gateway)
+  type: http
+  seq: 19
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/route
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "route": 1000
+}
+}
+
+docs {
+**Set number route**
+Sets the gateway route for a number.
+
+OperationId: `numbersRoute`
+}

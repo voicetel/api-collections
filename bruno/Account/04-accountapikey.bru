@@ -1,0 +1,51 @@
+meta {
+  name: Account · Login (get API key)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/v2.2/account/api-key
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "username": "1000000001",
+  "password": "abc1234567"
+}
+}
+
+script:post-response {
+  // Auto-save the returned API key into the apiKey collection variable.
+  // All other requests inherit bearer auth and read {{apiKey}}.
+  try {
+    const data = res.getBody() && res.getBody().data;
+    const key = data && (data.apikey || data.apiKey);
+    if (key) {
+      bru.setVar('apiKey', key);
+      console.log('Saved apiKey (' + key.slice(0, 6) + '…) to collection variables.');
+    } else {
+      console.warn('No apikey field in response.');
+    }
+  } catch (e) {
+    console.warn('Could not parse api-key response:', e.message);
+  }
+}
+
+docs {
+**Get API Key**
+Returns the current API key for the account identified by username and password. No Bearer token is required or accepted — credentials must be provided in the request body. Rate limited to 6 requests per hour per IP.
+
+⚠️ Rate-limited (6/hr/IP).
+
+This is the **only** endpoint that does NOT require an Authorization header.
+On success this collection automatically stores the returned API key as the `apiKey` collection variable, so every other request authenticates via `Authorization: Bearer {{apiKey}}` from then on.
+
+OperationId: `accountApiKey`
+}

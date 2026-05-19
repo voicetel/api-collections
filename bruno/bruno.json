@@ -1,0 +1,23 @@
+{
+  "version": "1",
+  "name": "VoiceTel API (v2.2.10)",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ],
+  "auth": {
+    "mode": "bearer",
+    "bearer": {
+      "token": "{{apiKey}}"
+    }
+  },
+  "meta": {
+    "contact": {
+      "name": "VoiceTel",
+      "email": "support@voicetel.com",
+      "url": "https://voicetel.com"
+    },
+    "apiVersion": "2.2.10"
+  }
+}

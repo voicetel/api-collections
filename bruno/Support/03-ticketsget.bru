@@ -1,0 +1,24 @@
+meta {
+  name: Support · Get ticket
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/v2.2/support/tickets/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Get a ticket**
+Returns a ticket including its threads. Customers can only view their own tickets.
+
+Note: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.
+
+OperationId: `ticketsGet`
+}

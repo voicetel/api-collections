@@ -1,0 +1,25 @@
+meta {
+  name: Account · CDR (call detail records)
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/v2.2/account/cdr
+  body: none
+  auth: inherit
+}
+
+query {
+  ~start: 1747345200
+  ~end: 1747258800
+}
+
+docs {
+**Call detail records**
+Call Detail Records for the authenticated account within the given Unix-timestamp range. Rate-limited to 6 requests per hour per IP.
+
+⚠️ Rate-limited (6/hr/IP).
+
+OperationId: `accountCdr`
+}

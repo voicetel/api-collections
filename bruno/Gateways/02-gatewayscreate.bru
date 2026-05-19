@@ -1,0 +1,30 @@
+meta {
+  name: Gateways · Create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/gateways
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "gateway": "203.0.113.10:5060",
+  "prefix": "9",
+  "limit": 23
+}
+}
+
+docs {
+**Add a gateway**
+Adds a SIP gateway. Must resolve to a routable public IPv4 address. Optional port as host:port. Optionally set a dial prefix and concurrent call limit.
+
+OperationId: `gatewaysCreate`
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Messaging · Campaign status
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/v2.2/messaging/campaigns?ids=ABC123,DEF456
+  body: none
+  auth: inherit
+}
+
+query {
+  ids: ABC123,DEF456
+}
+
+docs {
+**Read campaign status from the messaging network**
+For each id, returns the the messaging network campaign status and the list of numbers currently bound.
+
+OperationId: `messagingCampaignStatus`
+}

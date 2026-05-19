@@ -1,0 +1,22 @@
+meta {
+  name: Account · Credits balance
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/v2.2/account/credits
+  body: none
+  auth: inherit
+}
+
+query {
+  ~status: 
+}
+
+docs {
+**Credit history**
+Returns the complete credit history for the account — all credits regardless of invoice status. Each entry includes a paid flag: true means the customer has fulfilled the invoice; false means the invoice is still outstanding. Use /v2.2/account/credits/paid or /v2.2/account/credits/unpaid to retrieve a filtered subset.
+
+OperationId: `accountCredits`
+}

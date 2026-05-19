@@ -1,0 +1,22 @@
+meta {
+  name: Numbers · Get SMS config
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers/:number/sms
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Get SMS routing**
+Returns the SMS routing configuration for the number. Type is one of: email, webhook, sip.
+
+OperationId: `numbersSmsGet`
+}

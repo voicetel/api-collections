@@ -1,0 +1,22 @@
+meta {
+  name: Gateways · List assigned numbers
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/v2.2/gateways/:id/numbers
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**List numbers on a gateway**
+Gateways numbers on /v2.2/gateways/{id}/numbers.
+
+OperationId: `gatewaysNumbers`
+}

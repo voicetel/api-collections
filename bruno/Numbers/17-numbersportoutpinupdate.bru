@@ -1,0 +1,32 @@
+meta {
+  name: Numbers · Update port-out PIN
+  type: http
+  seq: 17
+}
+
+patch {
+  url: {{baseUrl}}/v2.2/numbers/:number/port-out-pin
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "pin": "4287"
+}
+}
+
+docs {
+**Set the port-out PIN on a number**
+Updates the four-digit PIN that future losing carriers must present to release this number. Requires that the number is currently on the authenticated account.
+
+OperationId: `numbersPortOutPinUpdate`
+}

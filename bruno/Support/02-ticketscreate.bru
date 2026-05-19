@@ -1,0 +1,30 @@
+meta {
+  name: Support · Create ticket
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/support/tickets
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "subject": "I need help with my account",
+  "email": "user@example.com",
+  "message": "Please help me..."
+}
+}
+
+docs {
+**Create a support ticket**
+Creates a new support ticket. The customer email is automatically populated from the authenticated account. Administrators may optionally specify a different email.
+
+OperationId: `ticketsCreate`
+}

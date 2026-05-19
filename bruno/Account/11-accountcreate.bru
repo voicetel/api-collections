@@ -1,0 +1,30 @@
+meta {
+  name: Account · Sign up (top-level)
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/v2.2/accounts
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "name": "Acme Inc",
+  "email": "user@example.com",
+  "promo": "example"
+}
+}
+
+docs {
+**Create a new account**
+Creates a new account. No authentication required. Returns account credentials and API key. A verification email is sent.
+
+OperationId: `accountCreate`
+}

@@ -1,0 +1,24 @@
+meta {
+  name: e911 · Delete record
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/e911/:dn
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dn: <dn>
+}
+
+docs {
+**Remove e911 record**
+E 911 remove record on /v2.2/e911/{dn}.
+
+Returns **204 No Content** on success — no response body.
+
+OperationId: `e911RecordDelete`
+}

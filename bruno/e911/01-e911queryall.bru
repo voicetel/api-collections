@@ -1,0 +1,18 @@
+meta {
+  name: e911 · List records
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/e911
+  body: none
+  auth: inherit
+}
+
+docs {
+**List all e911 records**
+Returns all e911 records provisioned for telephone numbers on the account.
+
+OperationId: `e911QueryAll`
+}

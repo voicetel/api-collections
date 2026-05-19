@@ -1,0 +1,24 @@
+meta {
+  name: Ports · Availability check
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/v2.2/ports/availability/:number
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Check whether a number can be ported in**
+Checks whether the number can be ported in. On portable=true the system sets a Redis flag that lets a subsequent POST /v2.2/ports submit the port within an hour.
+
+v2.2.10: response includes `localRoutingNumber` and `rateCenterTier`.
+
+OperationId: `portAvailability`
+}

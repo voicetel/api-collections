@@ -1,0 +1,22 @@
+meta {
+  name: e911 · Get record
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/v2.2/e911/:dn
+  body: none
+  auth: inherit
+}
+
+params:path {
+  dn: <dn>
+}
+
+docs {
+**Get e911 record**
+Returns the e911 record for a specific telephone number on the account.
+
+OperationId: `e911QueryRecord`
+}

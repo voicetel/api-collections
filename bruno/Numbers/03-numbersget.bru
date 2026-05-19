@@ -1,0 +1,22 @@
+meta {
+  name: Numbers · Get
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers/:number
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Get number detail**
+Numbers get on /v2.2/numbers/{number}.
+
+OperationId: `numbersGet`
+}

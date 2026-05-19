@@ -1,0 +1,22 @@
+meta {
+  name: Ports · Get
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/v2.2/ports/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Get a single port-in record**
+Returns the full detail for one port-in record. Returns 404 if the id does not exist or is owned by a different account.
+
+OperationId: `portGet`
+}
