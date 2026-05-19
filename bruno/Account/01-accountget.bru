@@ -1,0 +1,20 @@
+meta {
+  name: Account · Get info
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/account
+  body: none
+  auth: inherit
+}
+
+docs {
+**Get account info**
+Returns full account details including balance, services, and rates. Rates are read-only. Rate limited: 6 requests per hour per IP.
+
+⚠️ Rate-limited (6/hr/IP).
+
+OperationId: `accountGet`
+}

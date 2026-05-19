@@ -1,0 +1,23 @@
+meta {
+  name: Lookup · LRN
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/v2.2/lrn/:number/:ani
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+  ani: <ani>
+}
+
+docs {
+**LRN lookup**
+Returns the Location Routing Number (LRN) and carrier details for the destination number. Billed per lookup.
+
+OperationId: `lrnLookup`
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Account · Registration status
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/v2.2/account/registration
+  body: none
+  auth: inherit
+}
+
+docs {
+**Get SIP registration**
+Returns the current SIP URI and user agent for the registered device.
+
+⚠️ Rate-limited (6/hr/IP).
+
+OperationId: `accountRegistration`
+}

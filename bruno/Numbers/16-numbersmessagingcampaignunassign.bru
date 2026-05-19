@@ -1,0 +1,28 @@
+meta {
+  name: Numbers · Unassign 10DLC campaign
+  type: http
+  seq: 16
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/numbers/:number/messaging-campaign?campaignId=CH5K5IZ
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+query {
+  campaignId: CH5K5IZ
+}
+
+docs {
+**Unassign a number from a campaign**
+Removes this number from the given campaign. The campaign continues to exist with its other bindings. campaignId is supplied as a query parameter (per REST: DELETE should not carry a request body).
+
+Returns **200 OK** with a JSON body (not 204).
+
+OperationId: `numbersMessagingCampaignUnassign`
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Numbers · Delete forwarding
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/numbers/:number/forward
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Remove call forward**
+Numbers forward remove on /v2.2/numbers/{number}/forward.
+
+Returns **204 No Content** on success — no response body.
+
+OperationId: `numbersForwardDelete`
+}

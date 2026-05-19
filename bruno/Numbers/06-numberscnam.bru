@@ -1,0 +1,32 @@
+meta {
+  name: Numbers · Set CNAM
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/cnam
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "enabled": true
+}
+}
+
+docs {
+**Enable or disable inbound CNAM lookup**
+Numbers cnam on /v2.2/numbers/{number}/cnam.
+
+OperationId: `numbersCnam`
+}

@@ -1,0 +1,31 @@
+meta {
+  name: Account · Create sub-account
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/account
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "username": "1000000001",
+  "name": "Acme Inc",
+  "email": "user@example.com",
+  "masterAccount": "1000000001"
+}
+}
+
+docs {
+**Create account (admin only)**
+Creates a new sub-account. Requires administrator credentials. The new account password is auto-generated and returned.
+
+OperationId: `accountSubaccountCreate`
+}

@@ -1,0 +1,18 @@
+meta {
+  name: Numbers · List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers
+  body: none
+  auth: inherit
+}
+
+docs {
+**List numbers**
+Returns all telephone numbers on the account with full detail including route, gateway, forwarding, CNAM, SMS, and fax configuration.
+
+OperationId: `numbersList`
+}

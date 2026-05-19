@@ -1,0 +1,24 @@
+meta {
+  name: Numbers · Delete SMS config
+  type: http
+  seq: 22
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/numbers/:number/sms
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Remove SMS routing**
+Numbers sms delete on /v2.2/numbers/{number}/sms.
+
+Returns **204 No Content** on success — no response body.
+
+OperationId: `numbersSmsDelete`
+}

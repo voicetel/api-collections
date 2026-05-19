@@ -1,0 +1,33 @@
+meta {
+  name: e911 · Provision address on DN
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/v2.2/e911/:dn
+  body: json
+  auth: inherit
+}
+
+params:path {
+  dn: <dn>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "addressid": 123456,
+  "callername": "JOHN DOE"
+}
+}
+
+docs {
+**Provision e911 with known addressId**
+Provisions an e911 address using a pre-validated addressId from POST /e911/validate.
+
+OperationId: `e911ProvisionAddress`
+}

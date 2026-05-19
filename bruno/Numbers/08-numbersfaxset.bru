@@ -1,0 +1,32 @@
+meta {
+  name: Numbers · Set fax config
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/fax
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "email": "fax@example.com"
+}
+}
+
+docs {
+**Set fax-to-email**
+Numbers fax set on /v2.2/numbers/{number}/fax.
+
+OperationId: `numbersFaxSet`
+}

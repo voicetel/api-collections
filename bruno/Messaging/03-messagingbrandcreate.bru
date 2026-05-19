@@ -1,0 +1,30 @@
+meta {
+  name: Messaging · Create brand (10DLC)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/v2.2/messaging/brands
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "messagingBrandDescription": "Acme Inc — appointment reminders",
+  "messagingBrandName": "Acme Inc",
+  "messagingBrandId": "BMQ8L9X"
+}
+}
+
+docs {
+**Register a 10DLC brand at the network**
+Brand registration. Body fields define the brand attributes.
+
+OperationId: `messagingBrandCreate`
+}

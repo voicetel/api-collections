@@ -1,0 +1,22 @@
+meta {
+  name: Gateways · Get
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/v2.2/gateways/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Get a gateway**
+Gateways get on /v2.2/gateways/{id}.
+
+OperationId: `gatewaysGet`
+}

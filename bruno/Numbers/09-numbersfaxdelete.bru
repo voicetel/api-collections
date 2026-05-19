@@ -1,0 +1,24 @@
+meta {
+  name: Numbers · Delete fax config
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/numbers/:number/fax
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Remove fax routing**
+Numbers fax delete on /v2.2/numbers/{number}/fax.
+
+Returns **204 No Content** on success — no response body.
+
+OperationId: `numbersFaxDelete`
+}

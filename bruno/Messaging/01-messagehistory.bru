@@ -1,0 +1,25 @@
+meta {
+  name: Messages · History
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/messages?number=2012548000
+  body: none
+  auth: inherit
+}
+
+query {
+  ~type: sms
+  number: 2012548000
+  ~from: 1747345200
+  ~to: 1747258800
+}
+
+docs {
+**Message history for a number**
+Returns SMS or MMS Message Detail Records for a single number within a timestamp range. Both endpoints of the range are inclusive.
+
+OperationId: `messageHistory`
+}

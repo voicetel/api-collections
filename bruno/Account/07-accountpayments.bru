@@ -1,0 +1,20 @@
+meta {
+  name: Account · Payments
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/v2.2/account/payments
+  body: none
+  auth: inherit
+}
+
+docs {
+**Payment history**
+Returns all PayPal payments received on the account, newest first. Each entry includes the amount, date, PayPal transaction ID, payment status, and the payer email address. Payments represent real cash received; for credit adjustments see GET /v2.2/account/credits.
+
+⚠️ Rate-limited (6/hr/IP).
+
+OperationId: `accountPayments`
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Numbers · Move to sub-account
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/v2.2/numbers/:number
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "route": 1000,
+  "accountId": 1002
+}
+}
+
+docs {
+**Move a number to another account**
+Reassigns the number from the authenticated account to the destination accountId on the given route. Both fields are required.
+
+OperationId: `numbersMove`
+}

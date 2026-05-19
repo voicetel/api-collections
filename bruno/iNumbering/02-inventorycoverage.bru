@@ -1,0 +1,27 @@
+meta {
+  name: Inventory · Coverage (rate centers / NPAs)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/v2.2/inventory/coverage?countBy=state
+  body: none
+  auth: inherit
+}
+
+query {
+  countBy: state
+  ~locState: NJ
+  ~city: 
+  ~rcAbbre: 
+  ~npa: 201
+  ~lata: 
+}
+
+docs {
+**Aggregated number availability**
+Returns counts of available numbers bucketed by the chosen dimension. Optional filter parameters narrow the result. Results are cached for 10 minutes.
+
+OperationId: `inventoryCoverage`
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Numbers · Get messaging config
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers/:number/messaging
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Read messaging state for one number**
+Returns the current inbound route, outbound carrier, and enabled state for this number.
+
+OperationId: `numbersMessagingGet`
+}

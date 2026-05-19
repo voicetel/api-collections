@@ -1,0 +1,36 @@
+meta {
+  name: Messages · Send
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/messages
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "text": "Reminder: appointment 3pm.",
+  "subject": "example",
+  "toNumber": "2015551234",
+  "fromNumber": "2012548000",
+  "mediaUrls": [
+    "example"
+  ]
+}
+}
+
+docs {
+**Send a message (SMS or MMS)**
+Sends a text message. If mediaUrls is provided it goes as MMS via the messaging network; otherwise SMS via the SMS routing routed by the source number's assigned network. Charges the account on success.
+
+Note: the JSON body uses the wire field names `fromNumber` and `toNumber`.
+
+OperationId: `messageSend`
+}

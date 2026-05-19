@@ -1,0 +1,26 @@
+meta {
+  name: Inventory · Search available numbers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/inventory?tnMask=201
+  body: none
+  auth: inherit
+}
+
+query {
+  tnMask: 201
+  ~quantity: 10
+  ~province: NJ
+  ~rateCenter: 
+  ~lata: 
+}
+
+docs {
+**Search available phone numbers**
+Returns up to `quantity` numbers matching the tnMask and optional filters. Results are cached for 10 minutes.
+
+OperationId: `inventorySearch`
+}

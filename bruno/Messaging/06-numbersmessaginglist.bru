@@ -1,0 +1,22 @@
+meta {
+  name: Messaging · List SMS-enabled numbers
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers/messaging?numbers=9175803800,2012548000
+  body: none
+  auth: inherit
+}
+
+query {
+  numbers: 9175803800,2012548000
+}
+
+docs {
+**Read messaging state for a set of numbers**
+Returns the current messaging routing state for each requested number. Numbers not on the authenticated account are returned with onAccount=false.
+
+OperationId: `numbersMessagingList`
+}

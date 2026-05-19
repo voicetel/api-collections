@@ -1,0 +1,18 @@
+meta {
+  name: Auth · Get policy
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/auth
+  body: none
+  auth: inherit
+}
+
+docs {
+**Get authentication settings**
+Returns the current authentication type, its description, and all IP ACL entries for the account.
+
+OperationId: `authGet`
+}

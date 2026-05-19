@@ -1,0 +1,18 @@
+meta {
+  name: ACL · List
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/acl
+  body: none
+  auth: inherit
+}
+
+docs {
+**List IP ACL entries**
+Returns all IP CIDR blocks on the account IP authentication ACL.
+
+OperationId: `aclList`
+}

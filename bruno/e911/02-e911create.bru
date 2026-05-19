@@ -1,0 +1,34 @@
+meta {
+  name: e911 · Create record
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/e911
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "zip": "07430",
+  "dn": "2017301000",
+  "city": "MAHWAH",
+  "address1": "4601 RIO VISTA DR",
+  "address2": "example",
+  "callername": "Michael Mavroudis",
+  "state": "NJ"
+}
+}
+
+docs {
+**Create an e911 record**
+Validates the address and provisions an e911 record for the given dn. dn must be a 10-digit telephone number owned by the authenticated account.
+
+OperationId: `e911Create`
+}

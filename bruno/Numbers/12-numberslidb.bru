@@ -1,0 +1,35 @@
+meta {
+  name: Numbers · Set LIDB
+  type: http
+  seq: 12
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/lidb
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "customerOrderReference": "example",
+  "cnam": "ACME CORP"
+}
+}
+
+docs {
+**Set outbound Caller ID Name (LIDB)**
+Sets the outbound Caller ID Name (CNAM/LIDB) for the number. Writes the name to the local cache (used by the softswitch for outbound caller-id) and then submits the update to the LIDB network. The local cache update is durable; a downstream failure is reported via the response's carrierStatus field but does not fail the request. Max 15 alphanumeric characters.
+
+Note: LIDB spelling — path is `/lidb`, operationId `numbersLidb`.
+
+OperationId: `numbersLidb`
+}

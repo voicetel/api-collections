@@ -1,0 +1,32 @@
+meta {
+  name: Numbers · Set forwarding
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/forward
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "destination": "2015551234"
+}
+}
+
+docs {
+**Set call forward**
+Numbers forward set on /v2.2/numbers/{number}/forward.
+
+OperationId: `numbersForwardSet`
+}

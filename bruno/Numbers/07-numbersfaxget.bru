@@ -1,0 +1,22 @@
+meta {
+  name: Numbers · Get fax config
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers/:number/fax
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Get fax-to-email routing**
+Numbers fax get on /v2.2/numbers/{number}/fax.
+
+OperationId: `numbersFaxGet`
+}

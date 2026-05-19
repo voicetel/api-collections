@@ -1,0 +1,24 @@
+meta {
+  name: Gateways · Delete
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/gateways/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Remove a gateway**
+Removes a gateway. Will fail if DIDs are currently routed to it.
+
+Returns **204 No Content** on success — no response body.
+
+OperationId: `gatewaysDelete`
+}

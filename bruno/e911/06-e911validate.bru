@@ -1,0 +1,32 @@
+meta {
+  name: e911 · Validate address
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/v2.2/e911/validations
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "address1": "411 HACKENSACK AVENUE",
+  "address2": "STE 200",
+  "city": "HACKENSACK",
+  "zip": "07601",
+  "state": "NJ"
+}
+}
+
+docs {
+**Validate an e911 address**
+Validates a street address for e911 provisioning. Returns the validated address including an addressid for use with PUT /e911/{dn}.
+
+OperationId: `e911Validate`
+}

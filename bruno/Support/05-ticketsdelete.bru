@@ -1,0 +1,26 @@
+meta {
+  name: Support · Delete ticket
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/support/tickets/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Delete a ticket (admin only)**
+Tickets delete on /v2.2/support/tickets/{id}.
+
+Returns **204 No Content** on success — no response body.
+
+Note: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.
+
+OperationId: `ticketsDelete`
+}

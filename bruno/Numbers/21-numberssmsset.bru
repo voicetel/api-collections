@@ -1,0 +1,33 @@
+meta {
+  name: Numbers · Set SMS config
+  type: http
+  seq: 21
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/sms
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "type": "email",
+  "resource": "user@example.com"
+}
+}
+
+docs {
+**Set SMS routing**
+Sets or updates SMS routing for the number.
+
+OperationId: `numbersSmsSet`
+}

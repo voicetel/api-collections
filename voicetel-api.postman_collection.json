@@ -1,0 +1,2504 @@
+{
+  "info": {
+    "_postman_id": "voicetel-api-v2-2",
+    "name": "VoiceTel API (v2.2.10)",
+    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.10** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints (6 requests/hour/IP)\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `GET /v2.2/account/payments`\n- `GET /v2.2/account/registration`\n- `POST /v2.2/account/api-key`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "contact": {
+      "name": "VoiceTel",
+      "email": "support@voicetel.com",
+      "url": "https://voicetel.com"
+    },
+    "version": "2.2.10"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Account",
+      "description": "Account-wide endpoints — sign up, log in, retrieve CDRs and credits, manage sub-accounts, and view billing history.",
+      "item": [
+        {
+          "name": "Account · Get info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account"
+              ]
+            },
+            "description": "**Get account info**\nReturns full account details including balance, services, and rates. Rates are read-only. Rate limited: 6 requests per hour per IP.\n\n⚠️ Rate-limited (6/hr/IP).\n\nOperationId: `accountGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Create sub-account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account"
+              ]
+            },
+            "description": "**Create account (admin only)**\nCreates a new sub-account. Requires administrator credentials. The new account password is auto-generated and returned.\n\nOperationId: `accountSubaccountCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"1000000001\",\n  \"name\": \"Acme Inc\",\n  \"email\": \"user@example.com\",\n  \"masterAccount\": \"1000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account"
+              ]
+            },
+            "description": "**Update account settings**\nUpdates account settings. Customers may update: timezone, notify, notifyThreshold, callerId. Administrators may additionally update: ccs, service flags, and rate fields.\n\nOperationId: `accountPut`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sms\": true,\n  \"callerId\": \"2015551234\",\n  \"notify\": true,\n  \"ccs\": 0,\n  \"intl\": true,\n  \"notifyThreshold\": 0,\n  \"e911\": true,\n  \"timezone\": \"America/Chicago\",\n  \"mms\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Login (get API key)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account/api-key",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account",
+                "api-key"
+              ]
+            },
+            "description": "**Get API Key**\nReturns the current API key for the account identified by username and password. No Bearer token is required or accepted — credentials must be provided in the request body. Rate limited to 6 requests per hour per IP.\n\n⚠️ Rate-limited (6/hr/IP).\n\nThis is the **only** endpoint that does NOT require an Authorization header.\nOn success this collection automatically stores the returned API key as the `apiKey` collection variable, so every other request authenticates via `Authorization: Bearer {{apiKey}}` from then on.\n\nOperationId: `accountApiKey`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"1000000001\",\n  \"password\": \"abc1234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Auto-save the returned API key into the collection variable `apiKey`.",
+                  "// All other endpoints inherit bearer auth and read {{apiKey}}.",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  const key = json && json.data && (json.data.apikey || json.data.apiKey);",
+                  "  if (key) {",
+                  "    pm.collectionVariables.set('apiKey', key);",
+                  "    console.log('Saved apiKey (' + key.slice(0, 6) + '…) to collection variables.');",
+                  "  } else {",
+                  "    console.warn('No apikey field in response.');",
+                  "  }",
+                  "} catch (e) {",
+                  "  console.warn('Could not parse api-key response:', e.message);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Account · CDR (call detail records)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account/cdr?start=1747345200&end=1747258800",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account",
+                "cdr"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "1747345200",
+                  "description": "Range start as Unix timestamp. Defaults to now.",
+                  "disabled": true
+                },
+                {
+                  "key": "end",
+                  "value": "1747258800",
+                  "description": "Range end as Unix timestamp. Defaults to 24h ago.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "**Call detail records**\nCall Detail Records for the authenticated account within the given Unix-timestamp range. Rate-limited to 6 requests per hour per IP.\n\n⚠️ Rate-limited (6/hr/IP).\n\nOperationId: `accountCdr`"
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Credits balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account/credits?status=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account",
+                "credits"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter results to credit entries with the given paid/unpaid state.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "**Credit history**\nReturns the complete credit history for the account — all credits regardless of invoice status. Each entry includes a paid flag: true means the customer has fulfilled the invoice; false means the invoice is still outstanding. Use /v2.2/account/credits/paid or /v2.2/account/credits/unpaid to retrieve a filtered subset.\n\nOperationId: `accountCredits`"
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Payments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account",
+                "payments"
+              ]
+            },
+            "description": "**Payment history**\nReturns all PayPal payments received on the account, newest first. Each entry includes the amount, date, PayPal transaction ID, payment status, and the payer email address. Payments represent real cash received; for credit adjustments see GET /v2.2/account/credits.\n\n⚠️ Rate-limited (6/hr/IP).\n\nOperationId: `accountPayments`"
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Password recovery",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account/recovery",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account",
+                "recovery"
+              ]
+            },
+            "description": "**Request password recovery**\nSends a password recovery link to the email address on file. No authentication required.\n\nOperationId: `accountRecovery`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Recurring charges",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account/recurring-charges",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account",
+                "recurring-charges"
+              ]
+            },
+            "description": "**Monthly recurring charges**\nReturns current MRC broken down by service plus a total. Rate limited: 6 requests per hour per IP.\n\n⚠️ Rate-limited (6/hr/IP).\n\nOperationId: `accountRecurringCharges`"
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Registration status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/account/registration",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "account",
+                "registration"
+              ]
+            },
+            "description": "**Get SIP registration**\nReturns the current SIP URI and user agent for the registered device.\n\n⚠️ Rate-limited (6/hr/IP).\n\nOperationId: `accountRegistration`"
+          },
+          "response": []
+        },
+        {
+          "name": "Account · Sign up (top-level)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/accounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "accounts"
+              ]
+            },
+            "description": "**Create a new account**\nCreates a new account. No authentication required. Returns account credentials and API key. A verification email is sent.\n\nOperationId: `accountCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Inc\",\n  \"email\": \"user@example.com\",\n  \"promo\": \"example\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ACL",
+      "description": "API IP allow-list. Restrict which source IPs may use a given API key. Empty list ⇒ any IP allowed.",
+      "item": [
+        {
+          "name": "ACL · List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/acl",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "acl"
+              ]
+            },
+            "description": "**List IP ACL entries**\nReturns all IP CIDR blocks on the account IP authentication ACL.\n\nOperationId: `aclList`"
+          },
+          "response": []
+        },
+        {
+          "name": "ACL · Add entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/acl",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "acl"
+              ]
+            },
+            "description": "**Add IP ACL entries**\nAdds one or more IPv4 CIDR blocks. Only routable public addresses accepted. Mask must be /8, /16, /24, or /32.\n\nOperationId: `aclCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"acl\": [\n    {\n      \"cidr\": \"203.0.113.0/24\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ACL · Remove entry",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/acl?cidrs=203.0.113.0%2F24",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "acl"
+              ],
+              "query": [
+                {
+                  "key": "cidrs",
+                  "value": "203.0.113.0/24",
+                  "description": "Comma-separated list of CIDR blocks to remove from the ACL (e.g. 203.0.113.0/24,203.0.113.1/32).",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "**Remove IP ACL entries**\nRemoves one or more IPv4 CIDR blocks from the IP-ACL. CIDRs are passed as a comma-separated `cidrs` query string parameter.\n\nReturns **200 OK** with a JSON body (not 204).\n\nOperationId: `aclDelete`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "description": "Authentication policy — fetch and update password/IP/key rotation settings on the account.",
+      "item": [
+        {
+          "name": "Auth · Get policy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "auth"
+              ]
+            },
+            "description": "**Get authentication settings**\nReturns the current authentication type, its description, and all IP ACL entries for the account.\n\nOperationId: `authGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Auth · Update policy",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/auth",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "auth"
+              ]
+            },
+            "description": "**Update authentication settings**\nUpdates the account authentication type and/or password.\n\nOperationId: `authPut`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"abc123\",\n  \"authType\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "e911",
+      "description": "Emergency-911 address provisioning. Validate addresses, create records, provision DNs to addresses.",
+      "item": [
+        {
+          "name": "e911 · List records",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/e911",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "e911"
+              ]
+            },
+            "description": "**List all e911 records**\nReturns all e911 records provisioned for telephone numbers on the account.\n\nOperationId: `e911QueryAll`"
+          },
+          "response": []
+        },
+        {
+          "name": "e911 · Create record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/e911",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "e911"
+              ]
+            },
+            "description": "**Create an e911 record**\nValidates the address and provisions an e911 record for the given dn. dn must be a 10-digit telephone number owned by the authenticated account.\n\nOperationId: `e911Create`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"zip\": \"07430\",\n  \"dn\": \"2017301000\",\n  \"city\": \"MAHWAH\",\n  \"address1\": \"4601 RIO VISTA DR\",\n  \"address2\": \"example\",\n  \"callername\": \"Michael Mavroudis\",\n  \"state\": \"NJ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "e911 · Get record",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/e911/:dn",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "e911",
+                ":dn"
+              ],
+              "variable": [
+                {
+                  "key": "dn",
+                  "value": "<dn>",
+                  "description": "Path parameter: dn"
+                }
+              ]
+            },
+            "description": "**Get e911 record**\nReturns the e911 record for a specific telephone number on the account.\n\nOperationId: `e911QueryRecord`"
+          },
+          "response": []
+        },
+        {
+          "name": "e911 · Provision address on DN",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/e911/:dn",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "e911",
+                ":dn"
+              ],
+              "variable": [
+                {
+                  "key": "dn",
+                  "value": "<dn>",
+                  "description": "Path parameter: dn"
+                }
+              ]
+            },
+            "description": "**Provision e911 with known addressId**\nProvisions an e911 address using a pre-validated addressId from POST /e911/validate.\n\nOperationId: `e911ProvisionAddress`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressid\": 123456,\n  \"callername\": \"JOHN DOE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "e911 · Delete record",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/e911/:dn",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "e911",
+                ":dn"
+              ],
+              "variable": [
+                {
+                  "key": "dn",
+                  "value": "<dn>",
+                  "description": "Path parameter: dn"
+                }
+              ]
+            },
+            "description": "**Remove e911 record**\nE 911 remove record on /v2.2/e911/{dn}.\n\nReturns **204 No Content** on success — no response body.\n\nOperationId: `e911RecordDelete`"
+          },
+          "response": []
+        },
+        {
+          "name": "e911 · Validate address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/e911/validations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "e911",
+                "validations"
+              ]
+            },
+            "description": "**Validate an e911 address**\nValidates a street address for e911 provisioning. Returns the validated address including an addressid for use with PUT /e911/{dn}.\n\nOperationId: `e911Validate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address1\": \"411 HACKENSACK AVENUE\",\n  \"address2\": \"STE 200\",\n  \"city\": \"HACKENSACK\",\n  \"zip\": \"07601\",\n  \"state\": \"NJ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Gateways",
+      "description": "Outbound SIP gateways. Each number on the account is routed to one of these gateways.",
+      "item": [
+        {
+          "name": "Gateways · List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/gateways",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "gateways"
+              ]
+            },
+            "description": "**List gateways**\nReturns all system route types and user-defined SIP gateways. System routes: 1=USER, 2=T30, 3=VOICE_BRIDGE, 4=DID, 5=T38, 6=RTC_BRIDGE, 8=SDN.\n\nOperationId: `gatewaysList`"
+          },
+          "response": []
+        },
+        {
+          "name": "Gateways · Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/gateways",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "gateways"
+              ]
+            },
+            "description": "**Add a gateway**\nAdds a SIP gateway. Must resolve to a routable public IPv4 address. Optional port as host:port. Optionally set a dial prefix and concurrent call limit.\n\nOperationId: `gatewaysCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gateway\": \"203.0.113.10:5060\",\n  \"prefix\": \"9\",\n  \"limit\": 23\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Gateways · Get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/gateways/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "gateways",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Get a gateway**\nGateways get on /v2.2/gateways/{id}.\n\nOperationId: `gatewaysGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Gateways · Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/gateways/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "gateways",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Update a gateway**\nGateways put on /v2.2/gateways/{id}.\n\nOperationId: `gatewaysPut`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gateway\": \"203.0.113.20:5060\",\n  \"prefix\": \"example\",\n  \"limit\": 100\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Gateways · Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/gateways/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "gateways",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Remove a gateway**\nRemoves a gateway. Will fail if DIDs are currently routed to it.\n\nReturns **204 No Content** on success — no response body.\n\nOperationId: `gatewaysDelete`"
+          },
+          "response": []
+        },
+        {
+          "name": "Gateways · List assigned numbers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/gateways/:id/numbers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "gateways",
+                ":id",
+                "numbers"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**List numbers on a gateway**\nGateways numbers on /v2.2/gateways/{id}/numbers.\n\nOperationId: `gatewaysNumbers`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "iNumbering",
+      "description": "Inventory, ordering, and number-portability (LNP) — search inventory, place orders, manage port-ins.",
+      "item": [
+        {
+          "name": "Inventory · Search available numbers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/inventory?tnMask=201&quantity=10&province=NJ&rateCenter=&lata=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "inventory"
+              ],
+              "query": [
+                {
+                  "key": "tnMask",
+                  "value": "201",
+                  "description": "Prefix or wildcard pattern; `201`, `201555`, `201555*`.",
+                  "disabled": false
+                },
+                {
+                  "key": "quantity",
+                  "value": "10",
+                  "description": "Maximum results, 1–1000. Defaults to 10.",
+                  "disabled": true
+                },
+                {
+                  "key": "province",
+                  "value": "NJ",
+                  "description": "Limit results to this 2-letter US state or Canadian province code.",
+                  "disabled": true
+                },
+                {
+                  "key": "rateCenter",
+                  "value": "",
+                  "description": "Rate-center name.",
+                  "disabled": true
+                },
+                {
+                  "key": "lata",
+                  "value": "",
+                  "description": "LATA code (query filter).",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "**Search available phone numbers**\nReturns up to `quantity` numbers matching the tnMask and optional filters. Results are cached for 10 minutes.\n\nOperationId: `inventorySearch`"
+          },
+          "response": []
+        },
+        {
+          "name": "Inventory · Coverage (rate centers / NPAs)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/inventory/coverage?countBy=state&locState=NJ&city=&rcAbbre=&npa=201&lata=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "inventory",
+                "coverage"
+              ],
+              "query": [
+                {
+                  "key": "countBy",
+                  "value": "state",
+                  "description": "Aggregation dimension.",
+                  "disabled": false
+                },
+                {
+                  "key": "locState",
+                  "value": "NJ",
+                  "description": "Filter: state or province code (e.g. NJ).",
+                  "disabled": true
+                },
+                {
+                  "key": "city",
+                  "value": "",
+                  "description": "Filter: city name.",
+                  "disabled": true
+                },
+                {
+                  "key": "rcAbbre",
+                  "value": "",
+                  "description": "Filter: rate-center abbreviation.",
+                  "disabled": true
+                },
+                {
+                  "key": "npa",
+                  "value": "201",
+                  "description": "Filter: area code.",
+                  "disabled": true
+                },
+                {
+                  "key": "lata",
+                  "value": "",
+                  "description": "Filter: LATA code.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "**Aggregated number availability**\nReturns counts of available numbers bucketed by the chosen dimension. Optional filter parameters narrow the result. Results are cached for 10 minutes.\n\nOperationId: `inventoryCoverage`"
+          },
+          "response": []
+        },
+        {
+          "name": "Orders · Place order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "9c8f4a-001",
+                "description": "Client-supplied opaque token. Retries with the same key return the cached response and do NOT re-charge or re-order.",
+                "disabled": true
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "orders"
+              ]
+            },
+            "description": "**Order new telephone numbers**\nPlaces an the number order for the listed numbers and adds them to the authenticated account. Charges accounts.cash by accounts.did × len(numbers). Supports the Idempotency-Key header for safe retries (the cached response is returned for 24h on replay).\n\nOperationId: `orderCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numbers\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ports · List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/ports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "ports"
+              ]
+            },
+            "description": "**List port-in records**\nReturns every port-in record submitted by the authenticated account, newest first.\n\nOperationId: `portList`"
+          },
+          "response": []
+        },
+        {
+          "name": "Ports · Submit port-in",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/ports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "ports"
+              ]
+            },
+            "description": "**Submit a port-in order**\nSubmits a number port-in. Replicates the legacy LNP web form: creates a port record, opens a support ticket, notifies the LNP team, and deducts $6 per TN from accounts.cash. Numbers must have been confirmed portable via GET /v2.2/ports/availability/{number} within the prior hour. The LOA must be uploaded after submission.\n\nOperationId: `portSubmit`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"streetSuffix\": \"N\",\n  \"desiredDueDate\": \"2026-05-18T12:00:00Z\",\n  \"room\": \"\",\n  \"lcBtn\": \"2015551000\",\n  \"floor\": \"\",\n  \"street\": \"Main\",\n  \"unitValue\": \"\",\n  \"nameType\": \"business\",\n  \"lcAccountNumber\": \"123456789\",\n  \"streetNumber\": \"550\",\n  \"streetType\": \"ST\",\n  \"name\": \"Acme Corp\",\n  \"pin\": \"1234\",\n  \"authPerson\": \"Jane Smith\",\n  \"state\": \"IL\",\n  \"zip\": \"60601\",\n  \"city\": \"Chicago\",\n  \"features\": [\n    {\n      \"routing\": {\n        \"gatewayId\": 4\n      },\n      \"sms\": {\n        \"campaignId\": \"C123456\"\n      },\n      \"number\": \"2015551234\",\n      \"lidb\": {\n        \"name\": \"Acme Corp\"\n      }\n    }\n  ],\n  \"streetPrefix\": \"N\",\n  \"country\": \"US\",\n  \"did\": [\n    \"2015551234\"\n  ],\n  \"building\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ports · Get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/ports/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "ports",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Get a single port-in record**\nReturns the full detail for one port-in record. Returns 404 if the id does not exist or is owned by a different account.\n\nOperationId: `portGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Ports · Availability check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/ports/availability/:number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "ports",
+                "availability",
+                ":number"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Check whether a number can be ported in**\nChecks whether the number can be ported in. On portable=true the system sets a Redis flag that lets a subsequent POST /v2.2/ports submit the port within an hour.\n\nv2.2.10: response includes `localRoutingNumber` and `rateCenterTier`.\n\nOperationId: `portAvailability`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Lookups",
+      "description": "On-demand CNAM and LRN dips. Billed per query.",
+      "item": [
+        {
+          "name": "Lookup · CNAM",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/cnam/:number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "cnam",
+                ":number"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**CNAM lookup**\nReturns the Caller ID Name registered for the given 10-digit telephone number. Billed per lookup. Requires CNAM service to be enabled.\n\nOperationId: `cnamLookup`"
+          },
+          "response": []
+        },
+        {
+          "name": "Lookup · LRN",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/lrn/:number/:ani",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "lrn",
+                ":number",
+                ":ani"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                },
+                {
+                  "key": "ani",
+                  "value": "<ani>",
+                  "description": "Path parameter: ani"
+                }
+              ]
+            },
+            "description": "**LRN lookup**\nReturns the Location Routing Number (LRN) and carrier details for the destination number. Billed per lookup.\n\nOperationId: `lrnLookup`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messaging",
+      "description": "SMS / MMS history and outbound send, plus 10DLC brand and campaign management.",
+      "item": [
+        {
+          "name": "Messages · History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/messages?type=sms&number=2012548000&from=1747345200&to=1747258800",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "messages"
+              ],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "sms",
+                  "description": "sms (default), mms, or dlr. dlr returns delivery status events for sent messages.",
+                  "disabled": true
+                },
+                {
+                  "key": "number",
+                  "value": "2012548000",
+                  "description": "Ten-digit telephone number on the authenticated account — used by message history.",
+                  "disabled": false
+                },
+                {
+                  "key": "from",
+                  "value": "1747345200",
+                  "description": "Unix timestamp range start (newer). Defaults to now.",
+                  "disabled": true
+                },
+                {
+                  "key": "to",
+                  "value": "1747258800",
+                  "description": "Unix timestamp range end (older). Defaults to 24h ago.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "**Message history for a number**\nReturns SMS or MMS Message Detail Records for a single number within a timestamp range. Both endpoints of the range are inclusive.\n\nOperationId: `messageHistory`"
+          },
+          "response": []
+        },
+        {
+          "name": "Messages · Send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "messages"
+              ]
+            },
+            "description": "**Send a message (SMS or MMS)**\nSends a text message. If mediaUrls is provided it goes as MMS via the messaging network; otherwise SMS via the SMS routing routed by the source number's assigned network. Charges the account on success.\n\nNote: the JSON body uses the wire field names `fromNumber` and `toNumber`.\n\nOperationId: `messageSend`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Reminder: appointment 3pm.\",\n  \"subject\": \"example\",\n  \"toNumber\": \"2015551234\",\n  \"fromNumber\": \"2012548000\",\n  \"mediaUrls\": [\n    \"example\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Messaging · Create brand (10DLC)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/messaging/brands",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "messaging",
+                "brands"
+              ]
+            },
+            "description": "**Register a 10DLC brand at the network**\nBrand registration. Body fields define the brand attributes.\n\nOperationId: `messagingBrandCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messagingBrandDescription\": \"Acme Inc — appointment reminders\",\n  \"messagingBrandName\": \"Acme Inc\",\n  \"messagingBrandId\": \"BMQ8L9X\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Messaging · Campaign status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/messaging/campaigns?ids=ABC123%2CDEF456",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "messaging",
+                "campaigns"
+              ],
+              "query": [
+                {
+                  "key": "ids",
+                  "value": "ABC123,DEF456",
+                  "description": "Comma-separated alphanumeric campaign ids; max 100.",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "**Read campaign status from the messaging network**\nFor each id, returns the the messaging network campaign status and the list of numbers currently bound.\n\nOperationId: `messagingCampaignStatus`"
+          },
+          "response": []
+        },
+        {
+          "name": "Messaging · Create campaign (10DLC)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/messaging/campaigns",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "messaging",
+                "campaigns"
+              ]
+            },
+            "description": "**Register a 10DLC campaign at the network**\nCampaign registration. messagingBrandId / externalCampaignId / campaignDescription are required; campaignClassName and campaignStartDate default to T / today if omitted.\n\nOperationId: `messagingCampaignCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"campaignStartDate\": \"2026-05-18T12:00:00Z\",\n  \"externalCampaignId\": \"abc123\",\n  \"campaignDescription\": \"example\",\n  \"campaignClassName\": \"T\",\n  \"messagingBrandId\": \"abc123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Messaging · List SMS-enabled numbers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/messaging?numbers=9175803800%2C2012548000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                "messaging"
+              ],
+              "query": [
+                {
+                  "key": "numbers",
+                  "value": "9175803800,2012548000",
+                  "description": "Comma-separated list of 10-digit numbers. Maximum 1000.",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "**Read messaging state for a set of numbers**\nReturns the current messaging routing state for each requested number. Numbers not on the authenticated account are returned with onAccount=false.\n\nOperationId: `numbersMessagingList`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Numbers",
+      "description": "Per-number configuration — routing, CNAM, LIDB, fax, forwarding, SMS, 10DLC campaigns, translations.",
+      "item": [
+        {
+          "name": "Numbers · List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers"
+              ]
+            },
+            "description": "**List numbers**\nReturns all telephone numbers on the account with full detail including route, gateway, forwarding, CNAM, SMS, and fax configuration.\n\nOperationId: `numbersList`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Create / order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers"
+              ]
+            },
+            "description": "**Add a number**\nAssigns a telephone number to the account. Account balance must cover the monthly DID rate.\n\nOperationId: `numbersCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"route\": 4,\n  \"number\": \"2015551234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Get",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Get number detail**\nNumbers get on /v2.2/numbers/{number}.\n\nOperationId: `numbersGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Move to sub-account",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Move a number to another account**\nReassigns the number from the authenticated account to the destination accountId on the given route. Both fields are required.\n\nOperationId: `numbersMove`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"route\": 1000,\n  \"accountId\": 1002\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Delete (release)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Remove a number**\nPermanently removes the number from the account. Numbers currently porting cannot be removed.\n\nReturns **204 No Content** on success — no response body.\n\nOperationId: `numbersDelete`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Set CNAM",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/cnam",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "cnam"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Enable or disable inbound CNAM lookup**\nNumbers cnam on /v2.2/numbers/{number}/cnam.\n\nOperationId: `numbersCnam`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Get fax config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/fax",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "fax"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Get fax-to-email routing**\nNumbers fax get on /v2.2/numbers/{number}/fax.\n\nOperationId: `numbersFaxGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Set fax config",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/fax",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "fax"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Set fax-to-email**\nNumbers fax set on /v2.2/numbers/{number}/fax.\n\nOperationId: `numbersFaxSet`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"fax@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Delete fax config",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/fax",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "fax"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Remove fax routing**\nNumbers fax delete on /v2.2/numbers/{number}/fax.\n\nReturns **204 No Content** on success — no response body.\n\nOperationId: `numbersFaxDelete`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Set forwarding",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/forward",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "forward"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Set call forward**\nNumbers forward set on /v2.2/numbers/{number}/forward.\n\nOperationId: `numbersForwardSet`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"2015551234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Delete forwarding",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/forward",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "forward"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Remove call forward**\nNumbers forward remove on /v2.2/numbers/{number}/forward.\n\nReturns **204 No Content** on success — no response body.\n\nOperationId: `numbersForwardDelete`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Set LIDB",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/lidb",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "lidb"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Set outbound Caller ID Name (LIDB)**\nSets the outbound Caller ID Name (CNAM/LIDB) for the number. Writes the name to the local cache (used by the softswitch for outbound caller-id) and then submits the update to the LIDB network. The local cache update is durable; a downstream failure is reported via the response's carrierStatus field but does not fail the request. Max 15 alphanumeric characters.\n\nNote: LIDB spelling — path is `/lidb`, operationId `numbersLidb`.\n\nOperationId: `numbersLidb`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerOrderReference\": \"example\",\n  \"cnam\": \"ACME CORP\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Get messaging config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/messaging",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "messaging"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Read messaging state for one number**\nReturns the current inbound route, outbound carrier, and enabled state for this number.\n\nOperationId: `numbersMessagingGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Patch messaging config",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/messaging",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "messaging"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Update inbound or outbound routing**\nAt least one of routeIn / routeOut must be present. routeIn must be a numbers_sms row id owned by the authenticated account, or 0 to detach.\n\nOperationId: `numbersMessagingPatch`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"routeIn\": 1234,\n  \"routeOut\": 17\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Assign 10DLC campaign",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/messaging-campaign",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "messaging-campaign"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Assign a 10DLC campaign to a number**\nBinds the number to a registered campaign at the network. Number must be on the authenticated account.\n\nOperationId: `numbersMessagingCampaignAssign`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"campaignId\": \"ABC123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Unassign 10DLC campaign",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/messaging-campaign?campaignId=CH5K5IZ",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "messaging-campaign"
+              ],
+              "query": [
+                {
+                  "key": "campaignId",
+                  "value": "CH5K5IZ",
+                  "description": "TCR campaign id the number is being removed from.",
+                  "disabled": false
+                }
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Unassign a number from a campaign**\nRemoves this number from the given campaign. The campaign continues to exist with its other bindings. campaignId is supplied as a query parameter (per REST: DELETE should not carry a request body).\n\nReturns **200 OK** with a JSON body (not 204).\n\nOperationId: `numbersMessagingCampaignUnassign`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Update port-out PIN",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/port-out-pin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "port-out-pin"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Set the port-out PIN on a number**\nUpdates the four-digit PIN that future losing carriers must present to release this number. Requires that the number is currently on the authenticated account.\n\nOperationId: `numbersPortOutPinUpdate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pin\": \"4287\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Release",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/release",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "release"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Release a number back to the network**\nReleases the number back to the network (different from removing it from the account). A release event is created; the number cannot be re-assigned.\n\nOperationId: `numbersRelease`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Set route (gateway)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/route",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "route"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Set number route**\nSets the gateway route for a number.\n\nOperationId: `numbersRoute`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"route\": 1000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Get SMS config",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/sms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "sms"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Get SMS routing**\nReturns the SMS routing configuration for the number. Type is one of: email, webhook, sip.\n\nOperationId: `numbersSmsGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Set SMS config",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/sms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "sms"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Set SMS routing**\nSets or updates SMS routing for the number.\n\nOperationId: `numbersSmsSet`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"email\",\n  \"resource\": \"user@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Delete SMS config",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/sms",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "sms"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Remove SMS routing**\nNumbers sms delete on /v2.2/numbers/{number}/sms.\n\nReturns **204 No Content** on success — no response body.\n\nOperationId: `numbersSmsDelete`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Set translation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/translation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "translation"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Set DNIS translation**\nSets the inbound DNIS translation for the number.\n\nOperationId: `numbersTranslation`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"translation\": \"2015559999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · Bulk unassign 10DLC campaign",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/messaging-campaign?numbers=6185243600%2C4055160600&campaignId=CH5K5IZ",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                "messaging-campaign"
+              ],
+              "query": [
+                {
+                  "key": "numbers",
+                  "value": "6185243600,4055160600",
+                  "description": "Comma-separated list of 10-digit telephone numbers to remove from the campaign. Maximum 1000.",
+                  "disabled": false
+                },
+                {
+                  "key": "campaignId",
+                  "value": "CH5K5IZ",
+                  "description": "TCR campaign id the numbers are being removed from. The network is resolved via CSP sharing.",
+                  "disabled": false
+                }
+              ]
+            },
+            "description": "**Unassign multiple numbers from a campaign**\nRemoves each listed number from the given campaign. The campaign itself is unchanged; only the number-to-campaign bindings are removed. campaignId is required — the system uses CSP sharing to resolve which messaging path holds the bindings, then issues path-appropriate removal calls.\n\nReturns **200 OK** with a JSON body (not 204).\n\nOperationId: `numbersMessagingCampaignBulkUnassign`"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "description": "Support tickets — create, list, update, and reply.",
+      "item": [
+        {
+          "name": "Support · List tickets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/support/tickets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "support",
+                "tickets"
+              ]
+            },
+            "description": "**List support tickets**\nReturns support tickets. Customers see only their own tickets. Administrators see all tickets.\n\nOperationId: `ticketsList`"
+          },
+          "response": []
+        },
+        {
+          "name": "Support · Create ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/support/tickets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "support",
+                "tickets"
+              ]
+            },
+            "description": "**Create a support ticket**\nCreates a new support ticket. The customer email is automatically populated from the authenticated account. Administrators may optionally specify a different email.\n\nOperationId: `ticketsCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"I need help with my account\",\n  \"email\": \"user@example.com\",\n  \"message\": \"Please help me...\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Support · Get ticket",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/support/tickets/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "support",
+                "tickets",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Get a ticket**\nReturns a ticket including its threads. Customers can only view their own tickets.\n\nNote: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.\n\nOperationId: `ticketsGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Support · Update ticket",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/support/tickets/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "support",
+                "tickets",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Update ticket status**\nUpdates the status of a ticket. Customers can only update their own tickets.\n\nNote: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.\n\nOperationId: `ticketsPut`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Support · Delete ticket",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/support/tickets/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "support",
+                "tickets",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Delete a ticket (admin only)**\nTickets delete on /v2.2/support/tickets/{id}.\n\nReturns **204 No Content** on success — no response body.\n\nNote: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.\n\nOperationId: `ticketsDelete`"
+          },
+          "response": []
+        },
+        {
+          "name": "Support · List ticket messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/support/tickets/:id/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "support",
+                "tickets",
+                ":id",
+                "messages"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Get ticket threads**\nReturns all message threads for a ticket. Customers can only view their own tickets.\n\nNote: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.\n\nOperationId: `supportTicketMessages`"
+          },
+          "response": []
+        },
+        {
+          "name": "Support · Reply to ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/support/tickets/:id/replies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "support",
+                "tickets",
+                ":id",
+                "replies"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Add a reply to a ticket**\nAdds a customer reply to an existing ticket. Customers can only reply to their own tickets.\n\nNote: `:id` here is the support ticket **sequence integer** (e.g. `1015`), not a phone number.\n\nOperationId: `supportTicketReplyCreate`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Thank you for your reply.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.voicetel.com",
+      "type": "string"
+    },
+    {
+      "key": "username",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "password",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

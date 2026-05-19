@@ -1,0 +1,64 @@
+meta {
+  name: Ports · Submit port-in
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/v2.2/ports
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "streetSuffix": "N",
+  "desiredDueDate": "2026-05-18T12:00:00Z",
+  "room": "",
+  "lcBtn": "2015551000",
+  "floor": "",
+  "street": "Main",
+  "unitValue": "",
+  "nameType": "business",
+  "lcAccountNumber": "123456789",
+  "streetNumber": "550",
+  "streetType": "ST",
+  "name": "Acme Corp",
+  "pin": "1234",
+  "authPerson": "Jane Smith",
+  "state": "IL",
+  "zip": "60601",
+  "city": "Chicago",
+  "features": [
+    {
+      "routing": {
+        "gatewayId": 4
+      },
+      "sms": {
+        "campaignId": "C123456"
+      },
+      "number": "2015551234",
+      "lidb": {
+        "name": "Acme Corp"
+      }
+    }
+  ],
+  "streetPrefix": "N",
+  "country": "US",
+  "did": [
+    "2015551234"
+  ],
+  "building": ""
+}
+}
+
+docs {
+**Submit a port-in order**
+Submits a number port-in. Replicates the legacy LNP web form: creates a port record, opens a support ticket, notifies the LNP team, and deducts $6 per TN from accounts.cash. Numbers must have been confirmed portable via GET /v2.2/ports/availability/{number} within the prior hour. The LOA must be uploaded after submission.
+
+OperationId: `portSubmit`
+}

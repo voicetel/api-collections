@@ -1,0 +1,29 @@
+meta {
+  name: Numbers · Create / order
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/numbers
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "route": 4,
+  "number": "2015551234"
+}
+}
+
+docs {
+**Add a number**
+Assigns a telephone number to the account. Account balance must cover the monthly DID rate.
+
+OperationId: `numbersCreate`
+}

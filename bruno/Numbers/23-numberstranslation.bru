@@ -1,0 +1,32 @@
+meta {
+  name: Numbers · Set translation
+  type: http
+  seq: 23
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/translation
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "translation": "2015559999"
+}
+}
+
+docs {
+**Set DNIS translation**
+Sets the inbound DNIS translation for the number.
+
+OperationId: `numbersTranslation`
+}

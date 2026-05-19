@@ -1,0 +1,25 @@
+meta {
+  name: Numbers · Bulk unassign 10DLC campaign
+  type: http
+  seq: 24
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/numbers/messaging-campaign?numbers=6185243600,4055160600&campaignId=CH5K5IZ
+  body: none
+  auth: inherit
+}
+
+query {
+  numbers: 6185243600,4055160600
+  campaignId: CH5K5IZ
+}
+
+docs {
+**Unassign multiple numbers from a campaign**
+Removes each listed number from the given campaign. The campaign itself is unchanged; only the number-to-campaign bindings are removed. campaignId is required — the system uses CSP sharing to resolve which messaging path holds the bindings, then issues path-appropriate removal calls.
+
+Returns **200 OK** with a JSON body (not 204).
+
+OperationId: `numbersMessagingCampaignBulkUnassign`
+}

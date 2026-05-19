@@ -1,0 +1,32 @@
+meta {
+  name: ACL · Add entry
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/acl
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "acl": [
+    {
+      "cidr": "203.0.113.0/24"
+    }
+  ]
+}
+}
+
+docs {
+**Add IP ACL entries**
+Adds one or more IPv4 CIDR blocks. Only routable public addresses accepted. Mask must be /8, /16, /24, or /32.
+
+OperationId: `aclCreate`
+}

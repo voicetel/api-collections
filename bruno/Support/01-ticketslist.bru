@@ -1,0 +1,18 @@
+meta {
+  name: Support · List tickets
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/support/tickets
+  body: none
+  auth: inherit
+}
+
+docs {
+**List support tickets**
+Returns support tickets. Customers see only their own tickets. Administrators see all tickets.
+
+OperationId: `ticketsList`
+}

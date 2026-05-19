@@ -1,0 +1,28 @@
+meta {
+  name: Account · Password recovery
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/v2.2/account/recovery
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "email": "user@example.com"
+}
+}
+
+docs {
+**Request password recovery**
+Sends a password recovery link to the email address on file. No authentication required.
+
+OperationId: `accountRecovery`
+}

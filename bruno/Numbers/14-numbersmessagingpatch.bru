@@ -1,0 +1,33 @@
+meta {
+  name: Numbers · Patch messaging config
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{baseUrl}}/v2.2/numbers/:number/messaging
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "routeIn": 1234,
+  "routeOut": 17
+}
+}
+
+docs {
+**Update inbound or outbound routing**
+At least one of routeIn / routeOut must be present. routeIn must be a numbers_sms row id owned by the authenticated account, or 0 to detach.
+
+OperationId: `numbersMessagingPatch`
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Numbers · Assign 10DLC campaign
+  type: http
+  seq: 15
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/messaging-campaign
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "campaignId": "ABC123"
+}
+}
+
+docs {
+**Assign a 10DLC campaign to a number**
+Binds the number to a registered campaign at the network. Number must be on the authenticated account.
+
+OperationId: `numbersMessagingCampaignAssign`
+}

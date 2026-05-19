@@ -1,0 +1,22 @@
+meta {
+  name: Numbers · Release
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/v2.2/numbers/:number/release
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Release a number back to the network**
+Releases the number back to the network (different from removing it from the account). A release event is created; the number cannot be re-assigned.
+
+OperationId: `numbersRelease`
+}

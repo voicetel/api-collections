@@ -1,0 +1,32 @@
+meta {
+  name: Messaging · Create campaign (10DLC)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/v2.2/messaging/campaigns
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "campaignStartDate": "2026-05-18T12:00:00Z",
+  "externalCampaignId": "abc123",
+  "campaignDescription": "example",
+  "campaignClassName": "T",
+  "messagingBrandId": "abc123"
+}
+}
+
+docs {
+**Register a 10DLC campaign at the network**
+Campaign registration. messagingBrandId / externalCampaignId / campaignDescription are required; campaignClassName and campaignStartDate default to T / today if omitted.
+
+OperationId: `messagingCampaignCreate`
+}

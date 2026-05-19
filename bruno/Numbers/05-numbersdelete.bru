@@ -1,0 +1,24 @@
+meta {
+  name: Numbers · Delete (release)
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/numbers/:number
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Remove a number**
+Permanently removes the number from the account. Numbers currently porting cannot be removed.
+
+Returns **204 No Content** on success — no response body.
+
+OperationId: `numbersDelete`
+}
