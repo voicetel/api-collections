@@ -1,0 +1,26 @@
+name: Dependency Submission
+
+# Lightweight no-op workflow on repos whose ecosystem's manifest is
+# already parsed by GitHub's dependency-graph service (npm, pip,
+# nuget, bundler, composer, swift, github-actions). Keeps every repo
+# on the same workflow shape; the static graph remains authoritative.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Static graph note
+        run: |
+          echo "GitHub's dependency-graph service auto-parses the package"
+          echo "manifests in this repo on every push; no explicit submission"
+          echo "is required. This workflow exists so the security-tooling"
+          echo "shape is uniform across the voicetel/* fleet."
