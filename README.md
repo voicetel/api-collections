@@ -2,7 +2,7 @@
 
 Official **Postman** and **Bruno** collections for the [VoiceTel REST API](https://voicetel.com/docs/api/v2.2/) — every endpoint, every quirk, pre-wired auth, click-and-go.
 
-![Version](https://img.shields.io/badge/version-2.2.10-blue)
+![Version](https://img.shields.io/badge/version-2.2.14-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Postman](https://img.shields.io/badge/Postman-Collection_v2.1-orange)
 ![Bruno](https://img.shields.io/badge/Bruno-supported-purple)
