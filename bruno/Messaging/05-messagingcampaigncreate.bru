@@ -26,7 +26,7 @@ body:json {
 
 docs {
 **Register a 10DLC campaign at the network**
-Campaign registration. messagingBrandId / externalCampaignId / campaignDescription are required; campaignClassName and campaignStartDate default to T / today if omitted.
+Campaign registration. messagingBrandId / externalCampaignId / campaignDescription are required. The campaign must be available to the authenticated account (created by or shared with it). campaignClassName defaults to the message class the campaign registry assigned to the campaign (for example E for a standard campaign, T for low volume); campaignStartDate defaults to today.
 
 OperationId: `messagingCampaignCreate`
 }

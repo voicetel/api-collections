@@ -16,7 +16,7 @@ query {
 
 docs {
 **Read campaign status from the messaging network**
-For each id, returns the the messaging network campaign status and the list of numbers currently bound.
+For each id, returns the campaign status and the authenticated account's numbers currently enabled on that campaign (all messaging paths). Only campaigns available to the account are answered; other ids return CAMPAIGN_INVALID_ID. Status values: CAMPAIGN_DCA_COMPLETE (ready: carrier review finished, numbers assigned), CAMPAIGN_DCA_COMPLETE_NO_NUMBERS_ASSIGNED, CAMPAIGN_PENDING_DCA (active at the campaign registry, but carrier (DCA) review is not finished yet; numbers cannot be enabled until it is), CAMPAIGN_DCA_REJECTED (a carrier's DCA rejected or suspended the campaign; see dca.carriers), CAMPAIGN_<registry status> (e.g. CAMPAIGN_EXPIRED), or CAMPAIGN_INVALID_ID. Each entry also carries network, upstreamCnpId and dca (carrier review progress: electionComplete, electedCarriers, and each carrier decision received).
 
 OperationId: `messagingCampaignStatus`
 }

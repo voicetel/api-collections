@@ -26,7 +26,7 @@ body:json {
 
 docs {
 **Assign a 10DLC campaign to a number**
-Binds the number to a registered campaign at the network. Number must be on the authenticated account.
+Enables the number for messaging on a 10DLC campaign. The campaign is verified first: it must be available to the authenticated account (created by or shared with it) and ACTIVE. The number is then enabled on the messaging path the campaign lives on -- path B synchronously (200), path C asynchronously (202, status "pending": the number is provisioned with the messaging provider, then routed; poll GET /v2.2/numbers/{number}/messaging). A campaign that is still awaiting carrier approval also returns 202 "pending": nothing changes until it is approved, then the number is enabled automatically. A binding on another path is removed. Campaigns still on path A are being migrated and are refused (409). Number must be on the authenticated account.
 
 OperationId: `numbersMessagingCampaignAssign`
 }

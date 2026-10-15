@@ -20,14 +20,14 @@ headers {
 
 body:json {
 {
-  "routeIn": 1234,
-  "routeOut": 17
+  "routeOut": 0,
+  "routeIn": 1234
 }
 }
 
 docs {
 **Update inbound or outbound routing**
-At least one of routeIn / routeOut must be present. routeIn must be a numbers_sms row id owned by the authenticated account, or 0 to detach.
+At least one of routeIn / routeOut must be present. routeIn must be a numbers_sms row id owned by the authenticated account, or 0 to detach. routeOut must be 0 (outbound off) or the route the number is enabled on; to move a number to another campaign or messaging path use PUT /v2.2/numbers/{number}/messaging-campaign.
 
 OperationId: `numbersMessagingPatch`
 }

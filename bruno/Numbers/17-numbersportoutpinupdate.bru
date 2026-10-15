@@ -26,7 +26,7 @@ body:json {
 
 docs {
 **Set the port-out PIN on a number**
-Updates the four-digit PIN that future losing carriers must present to release this number. Requires that the number is currently on the authenticated account.
+Sets the port-out PIN a losing carrier must present to release this number. A PIN is locked for 30 days once set, so this call is idempotent: if the number already has a PIN it is returned unchanged with changed=false; a newly set PIN returns changed=true. Both cases return HTTP 200.
 
 OperationId: `numbersPortOutPinUpdate`
 }

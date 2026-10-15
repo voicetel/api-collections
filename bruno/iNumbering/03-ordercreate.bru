@@ -23,7 +23,7 @@ body:json {
 
 docs {
 **Order new telephone numbers**
-Places an the number order for the listed numbers and adds them to the authenticated account. Charges accounts.cash by accounts.did × len(numbers). Supports the Idempotency-Key header for safe retries (the cached response is returned for 24h on replay).
+Places an the number order for the listed numbers and adds them to the authenticated account. Charges the account balance by the per-DID monthly rate for each number ordered. Supports the Idempotency-Key header for safe retries (the cached response is returned for 24h on replay).
 
 OperationId: `orderCreate`
 }

@@ -1,15 +1,15 @@
 {
   "info": {
     "_postman_id": "voicetel-api-v2-2",
-    "name": "VoiceTel API (v2.2.10)",
-    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.10** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints (6 requests/hour/IP)\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `GET /v2.2/account/payments`\n- `GET /v2.2/account/registration`\n- `POST /v2.2/account/api-key`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
+    "name": "VoiceTel API (v2.2.14)",
+    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.14** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints (6 requests/hour/IP)\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `GET /v2.2/account/payments`\n- `GET /v2.2/account/registration`\n- `POST /v2.2/account/api-key`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "contact": {
       "name": "VoiceTel",
       "email": "support@voicetel.com",
       "url": "https://voicetel.com"
     },
-    "version": "2.2.10"
+    "version": "2.2.14"
   },
   "auth": {
     "type": "bearer",
@@ -712,7 +712,7 @@
                 "gateways"
               ]
             },
-            "description": "**List gateways**\nReturns all system route types and user-defined SIP gateways. System routes: 1=USER, 2=T30, 3=VOICE_BRIDGE, 4=DID, 5=T38, 6=RTC_BRIDGE, 8=SDN.\n\nOperationId: `gatewaysList`"
+            "description": "**List gateways**\nReturns all system route types and user-defined SIP gateways. System routes: 1=USER, 2=T30, 3=VOICE_BRIDGE, 4=DID, 5=T38, 6=VOICEML, 8=SDN.\n\nOperationId: `gatewaysList`"
           },
           "response": []
         },
@@ -1013,7 +1013,7 @@
                 "orders"
               ]
             },
-            "description": "**Order new telephone numbers**\nPlaces an the number order for the listed numbers and adds them to the authenticated account. Charges accounts.cash by accounts.did × len(numbers). Supports the Idempotency-Key header for safe retries (the cached response is returned for 24h on replay).\n\nOperationId: `orderCreate`",
+            "description": "**Order new telephone numbers**\nPlaces an the number order for the listed numbers and adds them to the authenticated account. Charges the account balance by the per-DID monthly rate for each number ordered. Supports the Idempotency-Key header for safe retries (the cached response is returned for 24h on replay).\n\nOperationId: `orderCreate`",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"numbers\": []\n}",
@@ -1065,7 +1065,7 @@
                 "ports"
               ]
             },
-            "description": "**Submit a port-in order**\nSubmits a number port-in. Replicates the legacy LNP web form: creates a port record, opens a support ticket, notifies the LNP team, and deducts $6 per TN from accounts.cash. Numbers must have been confirmed portable via GET /v2.2/ports/availability/{number} within the prior hour. The LOA must be uploaded after submission.\n\nOperationId: `portSubmit`",
+            "description": "**Submit a port-in order**\nSubmits a number port-in. Replicates the legacy LNP web form: creates a port record, opens a support ticket, notifies the LNP team, and deducts the configured per-TN port fee from the account balance. Numbers must have been confirmed portable via GET /v2.2/ports/availability/{number} within the prior hour. The LOA must be uploaded after submission.\n\nOperationId: `portSubmit`",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"streetSuffix\": \"N\",\n  \"desiredDueDate\": \"2026-05-18T12:00:00Z\",\n  \"room\": \"\",\n  \"lcBtn\": \"2015550101\",\n  \"floor\": \"\",\n  \"street\": \"Main\",\n  \"unitValue\": \"\",\n  \"nameType\": \"business\",\n  \"lcAccountNumber\": \"123456789\",\n  \"streetNumber\": \"550\",\n  \"streetType\": \"ST\",\n  \"name\": \"Acme Corp\",\n  \"pin\": \"1234\",\n  \"authPerson\": \"Jane Smith\",\n  \"state\": \"IL\",\n  \"zip\": \"60601\",\n  \"city\": \"Chicago\",\n  \"features\": [\n    {\n      \"routing\": {\n        \"gatewayId\": 4\n      },\n      \"sms\": {\n        \"campaignId\": \"C123456\"\n      },\n      \"number\": \"2015550123\",\n      \"lidb\": {\n        \"name\": \"Acme Corp\"\n      }\n    }\n  ],\n  \"streetPrefix\": \"N\",\n  \"country\": \"US\",\n  \"did\": [\n    \"2015550123\"\n  ],\n  \"building\": \"\"\n}",
@@ -1129,7 +1129,7 @@
                 }
               ]
             },
-            "description": "**Check whether a number can be ported in**\nChecks whether the number can be ported in. On portable=true the system sets a Redis flag that lets a subsequent POST /v2.2/ports submit the port within an hour.\n\nv2.2.10: response includes `localRoutingNumber` and `rateCenterTier`.\n\nOperationId: `portAvailability`"
+            "description": "**Check whether a number can be ported in**\nChecks whether the number can be ported in. On portable=true the system sets an internal flag that lets a subsequent POST /v2.2/ports submit the port within an hour.\n\nv2.2.10: response includes `localRoutingNumber` and `rateCenterTier`.\n\nOperationId: `portAvailability`"
           },
           "response": []
         }
@@ -1341,7 +1341,7 @@
                 }
               ]
             },
-            "description": "**Read campaign status from the messaging network**\nFor each id, returns the the messaging network campaign status and the list of numbers currently bound.\n\nOperationId: `messagingCampaignStatus`"
+            "description": "**Read campaign status from the messaging network**\nFor each id, returns the campaign status and the authenticated account's numbers currently enabled on that campaign (all messaging paths). Only campaigns available to the account are answered; other ids return CAMPAIGN_INVALID_ID. Status values: CAMPAIGN_DCA_COMPLETE (ready: carrier review finished, numbers assigned), CAMPAIGN_DCA_COMPLETE_NO_NUMBERS_ASSIGNED, CAMPAIGN_PENDING_DCA (active at the campaign registry, but carrier (DCA) review is not finished yet; numbers cannot be enabled until it is), CAMPAIGN_DCA_REJECTED (a carrier's DCA rejected or suspended the campaign; see dca.carriers), CAMPAIGN_<registry status> (e.g. CAMPAIGN_EXPIRED), or CAMPAIGN_INVALID_ID. Each entry also carries network, upstreamCnpId and dca (carrier review progress: electionComplete, electedCarriers, and each carrier decision received).\n\nOperationId: `messagingCampaignStatus`"
           },
           "response": []
         },
@@ -1366,7 +1366,7 @@
                 "campaigns"
               ]
             },
-            "description": "**Register a 10DLC campaign at the network**\nCampaign registration. messagingBrandId / externalCampaignId / campaignDescription are required; campaignClassName and campaignStartDate default to T / today if omitted.\n\nOperationId: `messagingCampaignCreate`",
+            "description": "**Register a 10DLC campaign at the network**\nCampaign registration. messagingBrandId / externalCampaignId / campaignDescription are required. The campaign must be available to the authenticated account (created by or shared with it). campaignClassName defaults to the message class the campaign registry assigned to the campaign (for example E for a standard campaign, T for low volume); campaignStartDate defaults to today.\n\nOperationId: `messagingCampaignCreate`",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"campaignStartDate\": \"2026-05-18T12:00:00Z\",\n  \"externalCampaignId\": \"abc123\",\n  \"campaignDescription\": \"example\",\n  \"campaignClassName\": \"T\",\n  \"messagingBrandId\": \"abc123\"\n}",
@@ -1869,10 +1869,10 @@
                 }
               ]
             },
-            "description": "**Update inbound or outbound routing**\nAt least one of routeIn / routeOut must be present. routeIn must be a numbers_sms row id owned by the authenticated account, or 0 to detach.\n\nOperationId: `numbersMessagingPatch`",
+            "description": "**Update inbound or outbound routing**\nAt least one of routeIn / routeOut must be present. routeIn must be a numbers_sms row id owned by the authenticated account, or 0 to detach. routeOut must be 0 (outbound off) or the route the number is enabled on; to move a number to another campaign or messaging path use PUT /v2.2/numbers/{number}/messaging-campaign.\n\nOperationId: `numbersMessagingPatch`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"routeIn\": 1234,\n  \"routeOut\": 17\n}",
+              "raw": "{\n  \"routeOut\": 0,\n  \"routeIn\": 1234\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1911,7 +1911,7 @@
                 }
               ]
             },
-            "description": "**Assign a 10DLC campaign to a number**\nBinds the number to a registered campaign at the network. Number must be on the authenticated account.\n\nOperationId: `numbersMessagingCampaignAssign`",
+            "description": "**Assign a 10DLC campaign to a number**\nEnables the number for messaging on a 10DLC campaign. The campaign is verified first: it must be available to the authenticated account (created by or shared with it) and ACTIVE. The number is then enabled on the messaging path the campaign lives on -- path B synchronously (200), path C asynchronously (202, status \"pending\": the number is provisioned with the messaging provider, then routed; poll GET /v2.2/numbers/{number}/messaging). A campaign that is still awaiting carrier approval also returns 202 \"pending\": nothing changes until it is approved, then the number is enabled automatically. A binding on another path is removed. Campaigns still on path A are being migrated and are refused (409). Number must be on the authenticated account.\n\nOperationId: `numbersMessagingCampaignAssign`",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"campaignId\": \"ABC123\"\n}",
@@ -1989,7 +1989,7 @@
                 }
               ]
             },
-            "description": "**Set the port-out PIN on a number**\nUpdates the four-digit PIN that future losing carriers must present to release this number. Requires that the number is currently on the authenticated account.\n\nOperationId: `numbersPortOutPinUpdate`",
+            "description": "**Set the port-out PIN on a number**\nSets the port-out PIN a losing carrier must present to release this number. A PIN is locked for 30 days once set, so this call is idempotent: if the number already has a PIN it is returned unchanged with changed=false; a newly set PIN returns changed=true. Both cases return HTTP 200.\n\nOperationId: `numbersPortOutPinUpdate`",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"pin\": \"4287\"\n}",

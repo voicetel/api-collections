@@ -58,7 +58,7 @@ body:json {
 
 docs {
 **Submit a port-in order**
-Submits a number port-in. Replicates the legacy LNP web form: creates a port record, opens a support ticket, notifies the LNP team, and deducts $6 per TN from accounts.cash. Numbers must have been confirmed portable via GET /v2.2/ports/availability/{number} within the prior hour. The LOA must be uploaded after submission.
+Submits a number port-in. Replicates the legacy LNP web form: creates a port record, opens a support ticket, notifies the LNP team, and deducts the configured per-TN port fee from the account balance. Numbers must have been confirmed portable via GET /v2.2/ports/availability/{number} within the prior hour. The LOA must be uploaded after submission.
 
 OperationId: `portSubmit`
 }

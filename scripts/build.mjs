@@ -425,7 +425,7 @@ for (const { tag, opId, method, path, op } of operations) {
 const collection = {
   info: {
     _postman_id: 'voicetel-api-v2-2',
-    name: 'VoiceTel API (v2.2.10)',
+    name: `VoiceTel API (v${spec.info.version})`,
     description: [
       '# VoiceTel API — Official Postman Collection',
       '',
@@ -682,7 +682,7 @@ for (const tag of Object.keys(FOLDER_FOR_TAG)) {
 // bruno.json
 const brunoJson = {
   version: '1',
-  name: 'VoiceTel API (v2.2.10)',
+  name: `VoiceTel API (v${spec.info.version})`,
   type: 'collection',
   ignore: ['node_modules', '.git'],
   auth: {

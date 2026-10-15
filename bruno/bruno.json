@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "VoiceTel API (v2.2.10)",
+  "name": "VoiceTel API (v2.2.14)",
   "type": "collection",
   "ignore": [
     "node_modules",
@@ -18,6 +18,6 @@
       "email": "support@voicetel.com",
       "url": "https://voicetel.com"
     },
-    "apiVersion": "2.2.10"
+    "apiVersion": "2.2.14"
   }
 }
