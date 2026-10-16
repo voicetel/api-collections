@@ -1,0 +1,18 @@
+meta {
+  name: Messaging · Health
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/v2.2/messaging/health
+  body: none
+  auth: inherit
+}
+
+docs {
+**Messaging health**
+Your account's messaging health, the same view as the portal Messaging tab: summary (numbers, messaging on, healthy, needing attention, in progress), campaigns with carrier-review progress, numbers needing attention (each with a plain-language title, detail and the actions that fix it: assign, disable, samples), 14 days of delivery counts (delivered, failed, blocked as spam, refused because the number is not enabled), and the alert-email setting. Updated hourly. Fix a number with PUT or DELETE /v2.2/numbers/{number}/messaging-campaign.
+
+OperationId: `messagingHealth`
+}

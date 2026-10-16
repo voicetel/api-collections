@@ -1,0 +1,28 @@
+meta {
+  name: Messaging · Check a number now
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/v2.2/messaging/health/check
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "number": "2125550123"
+}
+}
+
+docs {
+**Check a number now**
+Live check of one number: in service, messaging enabled, campaign approved, assigned to the campaign by the messaging provider, delivery failures in the last 24 hours, enablement in progress. Limited to 30 checks per hour per account.
+
+OperationId: `messagingHealthCheck`
+}

@@ -14,6 +14,7 @@
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { operationIdFor } from './operation-ids.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
@@ -30,7 +31,7 @@ const spec = JSON.parse(readFileSync(specPath, 'utf8'));
 // ---- helpers --------------------------------------------------------------
 
 const RATE_LIMITED_OPS = new Set([
-  'accountGet',       // account/info
+  'accountGet',       // GET /v2.2/account
   'accountCdr',
   'accountRecurringCharges',
   'accountPayments',
@@ -96,6 +97,11 @@ const FRIENDLY_NAMES = {
   messagingBrandCreate: 'Messaging · Create brand (10DLC)',
   messagingCampaignCreate: 'Messaging · Create campaign (10DLC)',
   messagingCampaignStatus: 'Messaging · Campaign status',
+  messagingHealth: 'Messaging · Health',
+  messagingHealthAlertsGet: 'Messaging · Alert email setting',
+  messagingHealthAlertsPut: 'Messaging · Turn alert emails on or off',
+  messagingHealthCheck: 'Messaging · Check a number now',
+  messagingHealthSamples: 'Messaging · Messages blocked as spam',
   numbersMessagingList: 'Messaging · List SMS-enabled numbers',
   // Numbers
   numbersList: 'Numbers · List',
@@ -333,7 +339,7 @@ for (const [path, item] of Object.entries(spec.paths)) {
     const op = item[method];
     if (!op) continue;
     const tag = (op.tags && op.tags[0]) || 'Untagged';
-    operations.push({ tag, opId: op.operationId, method: method.toUpperCase(), path, op });
+    operations.push({ tag, opId: operationIdFor(op, method, path), method: method.toUpperCase(), path, op });
   }
 }
 

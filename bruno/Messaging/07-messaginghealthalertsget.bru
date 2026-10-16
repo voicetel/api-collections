@@ -1,0 +1,18 @@
+meta {
+  name: Messaging · Alert email setting
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/v2.2/messaging/health/alerts
+  body: none
+  auth: inherit
+}
+
+docs {
+**Alert email setting**
+Whether new messaging problems are emailed to the account.
+
+OperationId: `messagingHealthAlertsGet`
+}

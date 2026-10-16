@@ -1,0 +1,28 @@
+meta {
+  name: Messaging · Turn alert emails on or off
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/v2.2/messaging/health/alerts
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "enabled": false
+}
+}
+
+docs {
+**Turn alert emails on or off**
+Email the account when new messaging problems are found (at most one digest about every 20 hours).
+
+OperationId: `messagingHealthAlertsPut`
+}

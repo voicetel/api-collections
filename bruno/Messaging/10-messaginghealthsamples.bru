@@ -1,0 +1,22 @@
+meta {
+  name: Messaging · Messages blocked as spam
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/v2.2/messaging/health/samples?number=
+  body: none
+  auth: inherit
+}
+
+query {
+  number: 
+}
+
+docs {
+**Messages blocked as spam**
+Up to 3 recent outbound messages from the number that carriers blocked as spam (time, masked recipient, text, reason), to help review content.
+
+OperationId: `messagingHealthSamples`
+}

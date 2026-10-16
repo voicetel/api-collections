@@ -2,7 +2,7 @@
 
 Official **Postman** and **Bruno** collections for the [VoiceTel REST API](https://voicetel.com/docs/api/v2.2/) — every endpoint, every quirk, pre-wired auth, click-and-go.
 
-![Version](https://img.shields.io/badge/version-2.2.14-blue)
+![Version](https://img.shields.io/badge/version-2.2.15-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Postman](https://img.shields.io/badge/Postman-Collection_v2.1-orange)
 ![Bruno](https://img.shields.io/badge/Bruno-supported-purple)
@@ -34,7 +34,7 @@ Official **Postman** and **Bruno** collections for the [VoiceTel REST API](https
 | `scripts/build.mjs` | Regenerates both collections from the spec. |
 | `scripts/validate.mjs` | Asserts every `operationId` in the spec is represented in both collections. |
 
-All **74 operations** across **10 resource families** are covered:
+All **79 operations** across **10 resource families** are covered:
 
 | Family | Endpoints | Highlights |
 |--------|-----------|-----------|
@@ -45,7 +45,7 @@ All **74 operations** across **10 resource families** are covered:
 | **Gateways** | 6 | Outbound SIP gateway CRUD + bound-numbers view. |
 | **iNumbering** | 7 | Inventory search, orders, port-ins, port-availability (with `localRoutingNumber` & `rateCenterTier`). |
 | **Lookups** | 2 | CNAM and LRN dips. |
-| **Messaging** | 6 | SMS / MMS send + history, 10DLC brand & campaign registration. |
+| **Messaging** | 11 | SMS / MMS send + history, 10DLC brand & campaign registration, messaging health (overview, per-number check, spam-blocked samples, alert emails). |
 | **Numbers** | 24 | Per-number config — routing, CNAM, LIDB, fax, forwarding, SMS, 10DLC campaigns, translations. |
 | **Support** | 7 | Tickets CRUD, threaded messages, replies. |
 

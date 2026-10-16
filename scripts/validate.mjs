@@ -5,6 +5,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { operationIdFor } from './operation-ids.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(__dirname, '..');
@@ -23,7 +24,7 @@ const spec = JSON.parse(readFileSync(specPath, 'utf8'));
 const expected = new Set();
 for (const [path, item] of Object.entries(spec.paths)) {
   for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
-    if (item[method]?.operationId) expected.add(item[method].operationId);
+    if (item[method]) expected.add(operationIdFor(item[method], method, path));
   }
 }
 
