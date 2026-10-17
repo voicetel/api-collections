@@ -552,7 +552,7 @@
             "description": "**Create an e911 record**\nValidates the address and provisions an e911 record for the given dn. dn must be a 10-digit telephone number owned by the authenticated account.\n\nOperationId: `e911Create`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"zip\": \"07430\",\n  \"dn\": \"2015550102\",\n  \"city\": \"SPRINGFIELD\",\n  \"address1\": \"123 MAIN ST\",\n  \"address2\": \"example\",\n  \"callername\": \"Jane Doe\",\n  \"state\": \"NJ\"\n}",
+              "raw": "{\n  \"zip\": \"07081\",\n  \"dn\": \"2015550102\",\n  \"city\": \"SPRINGFIELD\",\n  \"address1\": \"123 MAIN ST\",\n  \"address2\": \"example\",\n  \"callername\": \"Jane Doe\",\n  \"state\": \"NJ\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -681,7 +681,7 @@
             "description": "**Validate an e911 address**\nValidates a street address for e911 provisioning. Returns the validated address including an addressid for use with PUT /e911/{dn}.\n\nOperationId: `e911Validate`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"address1\": \"456 ELM STREET\",\n  \"address2\": \"STE 200\",\n  \"city\": \"RIVERTON\",\n  \"zip\": \"07601\",\n  \"state\": \"NJ\"\n}",
+              "raw": "{\n  \"address1\": \"456 ELM STREET\",\n  \"address2\": \"STE 200\",\n  \"city\": \"RIVERTON\",\n  \"zip\": \"07082\",\n  \"state\": \"NJ\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
