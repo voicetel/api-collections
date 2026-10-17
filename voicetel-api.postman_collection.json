@@ -1,15 +1,15 @@
 {
   "info": {
     "_postman_id": "voicetel-api-v2-2",
-    "name": "VoiceTel API (v2.2.16)",
-    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.16** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints\n\n6 requests/hour per IP:\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `POST /v2.2/account/api-key`\n\n30 checks/hour per account:\n\n- `POST /v2.2/messaging/health/check`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
+    "name": "VoiceTel API (v2.2.17)",
+    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.17** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints\n\n6 requests/hour per IP:\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `POST /v2.2/account/api-key`\n\n30 checks/hour per account:\n\n- `POST /v2.2/messaging/health/check`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "contact": {
       "name": "VoiceTel",
       "email": "support@voicetel.com",
       "url": "https://voicetel.com"
     },
-    "version": "2.2.16"
+    "version": "2.2.17"
   },
   "auth": {
     "type": "bearer",
@@ -1663,7 +1663,7 @@
             "description": "**Move a number to another account**\nReassigns the number from the authenticated account to the destination accountId on the given route. Both fields are required.\n\nOperationId: `numbersMove`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"route\": 1000,\n  \"accountId\": 1002\n}",
+              "raw": "{\n  \"route\": 4,\n  \"accountId\": 1002\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -2202,7 +2202,7 @@
             "description": "**Set number route**\nSets the gateway route for a number.\n\nOperationId: `numbersRoute`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"route\": 1000\n}",
+              "raw": "{\n  \"route\": 4\n}",
               "options": {
                 "raw": {
                   "language": "json"

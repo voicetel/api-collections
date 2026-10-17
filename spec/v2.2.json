@@ -114,7 +114,7 @@
           "data": {
             "numbers": [
               {
-                "route": 1000,
+                "route": 4,
                 "carrier": 0,
                 "faxEnabled": true,
                 "gateway": "203.0.113.10:5060",
@@ -286,9 +286,19 @@
       "numberAddRequest": {
         "properties": {
           "route": {
-            "description": "Gateway route ID. Defaults to 4 (DID).",
+            "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Used when adding a number.",
             "example": 4,
-            "type": "integer"
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
           },
           "number": {
             "description": "Telephone number (ten digits) (number add request number).",
@@ -905,9 +915,19 @@
       "numberAddData": {
         "properties": {
           "route": {
-            "description": "Gateway id the number is currently routed to (number add data route).",
-            "example": 0,
-            "type": "integer"
+            "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Returned after adding a number.",
+            "example": 4,
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
           },
           "number": {
             "description": "Telephone number (ten digits) (number add data number).",
@@ -918,7 +938,7 @@
         },
         "description": "Data payload for the number add operation.",
         "example": {
-          "route": 0,
+          "route": 4,
           "number": "2015550100"
         },
         "required": [],
@@ -1451,9 +1471,19 @@
       "numberMoveData": {
         "properties": {
           "route": {
-            "description": "gateway_id on the destination account that the number was pointed at.",
-            "example": 0,
-            "type": "integer"
+            "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Route on the destination account after the move.",
+            "example": 4,
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
           },
           "accountId": {
             "description": "Destination account (username) the number was moved to.",
@@ -1469,7 +1499,7 @@
         },
         "description": "Data payload for the number move operation.",
         "example": {
-          "route": 0,
+          "route": 4,
           "accountId": 1,
           "number": "2015550100"
         },
@@ -2927,7 +2957,7 @@
             },
             "example": [
               {
-                "route": 1000,
+                "route": 4,
                 "carrier": 0,
                 "faxEnabled": true,
                 "gateway": "203.0.113.10:5060",
@@ -2946,7 +2976,7 @@
         "example": {
           "numbers": [
             {
-              "route": 1000,
+              "route": 4,
               "carrier": 0,
               "faxEnabled": true,
               "gateway": "203.0.113.10:5060",
@@ -3849,7 +3879,7 @@
         "description": "Response wrapper for the number Route operation.",
         "example": {
           "data": {
-            "route": 0,
+            "route": 4,
             "number": "2015550100"
           },
           "status": "success"
@@ -3905,9 +3935,19 @@
                 {
                   "properties": {
                     "route": {
-                      "description": "Optional gateway_id on this account; defaults to 4.",
-                      "example": 0,
-                      "type": "integer"
+                      "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Route for numbers in this order.",
+                      "example": 4,
+                      "type": "integer",
+                      "enum": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        8,
+                        9
+                      ]
                     },
                     "number": {
                       "description": "Telephone number (ten digits) (1 number).",
@@ -5588,9 +5628,19 @@
       "numberDetail": {
         "properties": {
           "route": {
-            "description": "Gateway id the number is currently routed to (number detail route).",
-            "example": 1000,
-            "type": "integer"
+            "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Per-number route in the list.",
+            "example": 4,
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
           },
           "carrier": {
             "description": "Outbound messaging carrier identifier.",
@@ -5648,7 +5698,7 @@
         },
         "description": "number Detail shape.",
         "example": {
-          "route": 1000,
+          "route": 4,
           "carrier": 0,
           "faxEnabled": true,
           "gateway": "203.0.113.10:5060",
@@ -5797,9 +5847,19 @@
       "numberRouteData": {
         "properties": {
           "route": {
-            "description": "Gateway id the number is currently routed to (number route data route).",
-            "example": 0,
-            "type": "integer"
+            "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Echo of the applied route.",
+            "example": 4,
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
           },
           "number": {
             "description": "Telephone number (ten digits) (number route data number).",
@@ -5810,7 +5870,7 @@
         },
         "description": "Data payload for the number route operation.",
         "example": {
-          "route": 0,
+          "route": 4,
           "number": "2015550100"
         },
         "required": [],
@@ -7373,7 +7433,7 @@
         "description": "Response wrapper for the number Detail operation.",
         "example": {
           "data": {
-            "route": 1000,
+            "route": 4,
             "carrier": 0,
             "faxEnabled": true,
             "gateway": "203.0.113.10:5060",
@@ -7411,7 +7471,7 @@
         "description": "Response wrapper for the number Add operation.",
         "example": {
           "data": {
-            "route": 0,
+            "route": 4,
             "number": "2015550100"
           },
           "status": "success"
@@ -7715,7 +7775,7 @@
         "description": "Response wrapper for the number Move operation.",
         "example": {
           "data": {
-            "route": 0,
+            "route": 4,
             "accountId": 1,
             "number": "2015550100"
           },
@@ -8484,14 +8544,24 @@
       "numberRouteRequest": {
         "properties": {
           "route": {
-            "description": "Gateway id the number is currently routed to (number route request route).",
-            "example": 1000,
-            "type": "integer"
+            "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Set with PUT /v2.2/numbers/{number}/route.",
+            "example": 4,
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
           }
         },
         "description": "Request body for the number Route operation.",
         "example": {
-          "route": 1000
+          "route": 4
         },
         "required": [
           "route"
@@ -9471,9 +9541,19 @@
       "numberMoveRequest": {
         "properties": {
           "route": {
-            "description": "Gateway id the number is currently routed to (number move request route).",
-            "example": 1000,
-            "type": "integer"
+            "description": "Global route type: 1 USER, 2 T30, 3 VOICE_BRIDGE, 4 DID (default), 5 T38, 6 VOICEML, 8 SDN, 9 MOBILE. Target route after the move.",
+            "example": 4,
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              8,
+              9
+            ]
           },
           "accountId": {
             "description": "Destination account id (numeric username).",
@@ -9483,7 +9563,7 @@
         },
         "description": "Request body for the number Move operation.",
         "example": {
-          "route": 1000,
+          "route": 4,
           "accountId": 1002
         },
         "required": [
@@ -9863,7 +9943,7 @@
     "termsOfService": "https://www.voicetel.com/tos",
     "description": "VoiceTel REST API. All resource identifiers are in the URL path. Authenticate every request with `Authorization: Bearer <apikey>`. To obtain your API key, POST `{\"username\": <id>, \"password\": \"<password>\"}` to /v2.2/account/api-key. The response is `{\"status\":\"success\",\"data\":{\"apikey\":\"<32-hex-string>\"}}`. Only three endpoints do not require an Authorization header: POST /v2.2/account/api-key, POST /v2.2/account/recovery, and POST /v2.2/accounts. Re-fetch the API key after any password change. Rate-limited endpoints: GET /v2.2/account, GET /v2.2/account/cdr, GET /v2.2/account/recurring-charges, and POST /v2.2/account/api-key — 6 requests per hour per IP; POST /v2.2/messaging/health/check — 30 checks per hour per account.",
     "title": "VoiceTel API",
-    "version": "2.2.16",
+    "version": "2.2.17",
     "contact": {
       "email": "support@voicetel.com"
     }
@@ -10735,7 +10815,7 @@
                 },
                 "example": {
                   "data": {
-                    "route": 0,
+                    "route": 4,
                     "number": "2015550100"
                   },
                   "status": "success"
@@ -10803,7 +10883,7 @@
                   "data": {
                     "numbers": [
                       {
-                        "route": 1000,
+                        "route": 4,
                         "carrier": 0,
                         "faxEnabled": true,
                         "gateway": "203.0.113.10:5060",
@@ -13943,7 +14023,7 @@
                 "$ref": "#/components/schemas/numberRouteRequest"
               },
               "example": {
-                "route": 1000
+                "route": 4
               }
             }
           },
@@ -13978,7 +14058,7 @@
                 },
                 "example": {
                   "data": {
-                    "route": 0,
+                    "route": 4,
                     "number": "2015550100"
                   },
                   "status": "success"
@@ -14966,7 +15046,7 @@
                 "$ref": "#/components/schemas/numberMoveRequest"
               },
               "example": {
-                "route": 1000,
+                "route": 4,
                 "accountId": 1002
               }
             }
@@ -15036,7 +15116,7 @@
                 },
                 "example": {
                   "data": {
-                    "route": 0,
+                    "route": 4,
                     "accountId": 1,
                     "number": "2015550100"
                   },
@@ -15215,7 +15295,7 @@
                 },
                 "example": {
                   "data": {
-                    "route": 1000,
+                    "route": 4,
                     "carrier": 0,
                     "faxEnabled": true,
                     "gateway": "203.0.113.10:5060",
