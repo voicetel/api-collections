@@ -30,13 +30,17 @@ const spec = JSON.parse(readFileSync(specPath, 'utf8'));
 
 // ---- helpers --------------------------------------------------------------
 
+// Rate-limited to 6 requests/hour per IP (per the spec descriptions).
 const RATE_LIMITED_OPS = new Set([
   'accountGet',       // GET /v2.2/account
-  'accountCdr',
-  'accountRecurringCharges',
-  'accountPayments',
-  'accountRegistration',
-  'accountApiKey',
+  'accountCdr',       // GET /v2.2/account/cdr
+  'accountRecurringCharges', // GET /v2.2/account/recurring-charges
+  'accountApiKey',    // POST /v2.2/account/api-key
+]);
+
+// Rate-limited per account rather than per IP.
+const RATE_LIMITED_ACCOUNT_OPS = new Set([
+  'messagingHealthCheck', // POST /v2.2/messaging/health/check — 30 checks/hour per account
 ]);
 
 const DELETE_WITH_BODY_OPS = new Set([
@@ -67,12 +71,12 @@ const FRIENDLY_NAMES = {
   authGet: 'Auth · Get policy',
   authPut: 'Auth · Update policy',
   // e911
-  e911QueryAll: 'e911 · List records',
-  e911Create: 'e911 · Create record',
-  e911QueryRecord: 'e911 · Get record',
-  e911ProvisionAddress: 'e911 · Provision address on DN',
-  e911RecordDelete: 'e911 · Delete record',
-  e911Validate: 'e911 · Validate address',
+  e911QueryAll: 'E911 · List records',
+  e911Create: 'E911 · Create record',
+  e911QueryRecord: 'E911 · Get record',
+  e911ProvisionAddress: 'E911 · Provision address on DN',
+  e911RecordDelete: 'E911 · Delete record',
+  e911Validate: 'E911 · Validate address',
   // Gateways
   gatewaysList: 'Gateways · List',
   gatewaysCreate: 'Gateways · Create',
@@ -143,7 +147,7 @@ const FOLDER_FOR_TAG = {
   Account: 'Account',
   ACL: 'ACL',
   Authentication: 'Authentication',
-  e911: 'e911',
+  E911: 'E911',
   Gateways: 'Gateways',
   iNumbering: 'iNumbering',
   Lookups: 'Lookups',
@@ -159,7 +163,7 @@ const FOLDER_DESCRIPTIONS = {
     'API IP allow-list. Restrict which source IPs may use a given API key. Empty list ⇒ any IP allowed.',
   Authentication:
     'Authentication policy — fetch and update password/IP/key rotation settings on the account.',
-  e911:
+  E911:
     'Emergency-911 address provisioning. Validate addresses, create records, provision DNs to addresses.',
   Gateways:
     'Outbound SIP gateways. Each number on the account is routed to one of these gateways.',
@@ -234,6 +238,16 @@ function requestBodyExample(operation) {
   return exampleFromSchema(content.schema);
 }
 
+// Request body for the collections. The login endpoint must reference the
+// {{username}}/{{password}} variables (not the spec's literal example
+// credentials) so users only set them once in the environment.
+function bodyExampleFor(opId, operation) {
+  if (opId === 'accountApiKey') {
+    return { username: '{{username}}', password: '{{password}}' };
+  }
+  return requestBodyExample(operation);
+}
+
 function postmanUrl(pathTemplate, query) {
   const segments = pathTemplate
     .split('/')
@@ -263,6 +277,11 @@ function descriptionFor(op, method, path, opId) {
   if (RATE_LIMITED_OPS.has(opId)) {
     lines.push('');
     lines.push('⚠️ Rate-limited (6/hr/IP).');
+  }
+
+  if (RATE_LIMITED_ACCOUNT_OPS.has(opId)) {
+    lines.push('');
+    lines.push('⚠️ Rate-limited (30/hr/account).');
   }
 
   if (method === 'DELETE') {
@@ -371,7 +390,7 @@ for (const { tag, opId, method, path, op } of operations) {
     process.exit(1);
   }
 
-  const bodyExample = ['POST', 'PUT', 'PATCH'].includes(method) ? requestBodyExample(op) : null;
+  const bodyExample = ['POST', 'PUT', 'PATCH'].includes(method) ? bodyExampleFor(opId, op) : null;
   const hasBody = bodyExample !== null && bodyExample !== undefined;
   const headers = postmanHeadersFor(op, hasBody);
   const query = postmanQueryFor(op);
@@ -443,14 +462,18 @@ const collection = {
       '',
       'Every endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.',
       '',
-      '## Rate-limited endpoints (6 requests/hour/IP)',
+      '## Rate-limited endpoints',
+      '',
+      '6 requests/hour per IP:',
       '',
       '- `GET /v2.2/account`',
       '- `GET /v2.2/account/cdr`',
       '- `GET /v2.2/account/recurring-charges`',
-      '- `GET /v2.2/account/payments`',
-      '- `GET /v2.2/account/registration`',
       '- `POST /v2.2/account/api-key`',
+      '',
+      '30 checks/hour per account:',
+      '',
+      '- `POST /v2.2/messaging/health/check`',
       '',
       '## Documentation',
       '',
@@ -590,7 +613,7 @@ for (const { tag, opId, method, path, op } of operations) {
   const fileSlug = slugify(opId);
   const filePath = resolve(brunoRoot, folderName, `${String(seq).padStart(2, '0')}-${fileSlug}.bru`);
 
-  const bodyExample = ['POST', 'PUT', 'PATCH'].includes(method) ? requestBodyExample(op) : null;
+  const bodyExample = ['POST', 'PUT', 'PATCH'].includes(method) ? bodyExampleFor(opId, op) : null;
   const hasBody = bodyExample !== null && bodyExample !== undefined;
   const headers = postmanHeadersFor(op, hasBody);
   const query = postmanQueryFor(op);

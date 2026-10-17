@@ -31,9 +31,9 @@ zero-dependency Node ESM build scripts that generate them from the
 VoiceTel REST API OpenAPI spec. Hardening expectations:
 
 - The shipped collections use Postman variable placeholders
-  (`{{accountSid}}`, `{{apiKey}}`) and the Bruno environment file
-  declares the same. Do not commit a populated environment file —
-  the placeholders carry no secret value by design.
+  (`{{username}}`, `{{password}}`, `{{apiKey}}`) and the Bruno
+  environment file declares the same. Do not commit a populated
+  environment file — the placeholders carry no secret value by design.
 - The build scripts read the OpenAPI YAML/JSON and write only into
   the repo tree; they make no network calls.
 

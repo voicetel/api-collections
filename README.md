@@ -2,7 +2,7 @@
 
 Official **Postman** and **Bruno** collections for the [VoiceTel REST API](https://voicetel.com/docs/api/v2.2/) — every endpoint, every quirk, pre-wired auth, click-and-go.
 
-![Version](https://img.shields.io/badge/version-2.2.15-blue)
+![Version](https://img.shields.io/badge/version-2.2.16-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Postman](https://img.shields.io/badge/Postman-Collection_v2.1-orange)
 ![Bruno](https://img.shields.io/badge/Bruno-supported-purple)
@@ -49,8 +49,6 @@ All **79 operations** across **10 resource families** are covered:
 | **Numbers** | 24 | Per-number config — routing, CNAM, LIDB, fax, forwarding, SMS, 10DLC campaigns, translations. |
 | **Support** | 7 | Tickets CRUD, threaded messages, replies. |
 
-![Postman screenshot](docs/postman.png)
-
 ## 🚀 Importing to Postman
 
 1. Open Postman.
@@ -76,8 +74,6 @@ All **79 operations** across **10 resource families** are covered:
    - `apiKey` — leave blank; auto-filled on login.
 5. Open **Account → Account · Login (get API key)** and click **Send**. A post-response script writes `apiKey` into your environment automatically.
 
-![Bruno screenshot](docs/bruno.png)
-
 ## 🔐 Authentication walk-through
 
 The VoiceTel API uses **bearer auth** with an API key on every endpoint **except** `POST /v2.2/account/api-key`, which exchanges a username and password for the key.
@@ -102,14 +98,14 @@ If you rotate your password, just re-run the login request — the new key repla
 
 ## ⏱ Rate Limits
 
-The following six endpoints are rate-limited to **6 requests per hour per IP**. Their descriptions inside the collection are tagged with a ⚠️ marker.
+The following four endpoints are rate-limited to **6 requests per hour per IP**. Their descriptions inside the collection are tagged with a ⚠️ marker.
 
 - `GET /v2.2/account`
 - `GET /v2.2/account/cdr`
 - `GET /v2.2/account/recurring-charges`
-- `GET /v2.2/account/payments`
-- `GET /v2.2/account/registration`
 - `POST /v2.2/account/api-key`
+
+Separately, `POST /v2.2/messaging/health/check` is limited to **30 checks per hour per account**.
 
 All other endpoints have no per-IP throttling and are governed only by your account's plan limits.
 

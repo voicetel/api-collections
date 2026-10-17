@@ -1,15 +1,15 @@
 {
   "info": {
     "_postman_id": "voicetel-api-v2-2",
-    "name": "VoiceTel API (v2.2.15)",
-    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.15** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints (6 requests/hour/IP)\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `GET /v2.2/account/payments`\n- `GET /v2.2/account/registration`\n- `POST /v2.2/account/api-key`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
+    "name": "VoiceTel API (v2.2.16)",
+    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.16** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints\n\n6 requests/hour per IP:\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `POST /v2.2/account/api-key`\n\n30 checks/hour per account:\n\n- `POST /v2.2/messaging/health/check`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "contact": {
       "name": "VoiceTel",
       "email": "support@voicetel.com",
       "url": "https://voicetel.com"
     },
-    "version": "2.2.15"
+    "version": "2.2.16"
   },
   "auth": {
     "type": "bearer",
@@ -135,7 +135,7 @@
             "description": "**Get API Key**\nReturns the current API key for the account identified by username and password. No Bearer token is required or accepted — credentials must be provided in the request body. Rate limited to 6 requests per hour per IP.\n\n⚠️ Rate-limited (6/hr/IP).\n\nThis is the **only** endpoint that does NOT require an Authorization header.\nOn success this collection automatically stores the returned API key as the `apiKey` collection variable, so every other request authenticates via `Authorization: Bearer {{apiKey}}` from then on.\n\nOperationId: `accountApiKey`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"1000000001\",\n  \"password\": \"abc1234567\"\n}",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -250,7 +250,7 @@
                 "payments"
               ]
             },
-            "description": "**Payment history**\nReturns all PayPal payments received on the account, newest first. Each entry includes the amount, date, PayPal transaction ID, payment status, and the payer email address. Payments represent real cash received; for credit adjustments see GET /v2.2/account/credits.\n\n⚠️ Rate-limited (6/hr/IP).\n\nOperationId: `accountPayments`"
+            "description": "**Payment history**\nReturns all PayPal payments received on the account, newest first. Each entry includes the amount, date, PayPal transaction ID, payment status, and the payer email address. Payments represent real cash received; for credit adjustments see GET /v2.2/account/credits.\n\nOperationId: `accountPayments`"
           },
           "response": []
         },
@@ -324,7 +324,7 @@
                 "registration"
               ]
             },
-            "description": "**Get SIP registration**\nReturns the current SIP URI and user agent for the registered device.\n\n⚠️ Rate-limited (6/hr/IP).\n\nOperationId: `accountRegistration`"
+            "description": "**Get SIP registration**\nReturns the current SIP URI and user agent for the registered device.\n\nOperationId: `accountRegistration`"
           },
           "response": []
         },
@@ -348,7 +348,7 @@
                 "accounts"
               ]
             },
-            "description": "**Create a new account**\nCreates a new account. No authentication required. Returns account credentials and API key. A verification email is sent.\n\nOperationId: `accountCreate`",
+            "description": "**Create a new account**\nCreates a new account. No authentication required. Returns the new account's credentials. A verification email is sent.\n\nOperationId: `accountCreate`",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"Acme Inc\",\n  \"email\": \"user@example.com\",\n  \"promo\": \"example\"\n}",
@@ -507,11 +507,11 @@
       ]
     },
     {
-      "name": "e911",
+      "name": "E911",
       "description": "Emergency-911 address provisioning. Validate addresses, create records, provision DNs to addresses.",
       "item": [
         {
-          "name": "e911 · List records",
+          "name": "E911 · List records",
           "request": {
             "method": "GET",
             "header": [],
@@ -530,7 +530,7 @@
           "response": []
         },
         {
-          "name": "e911 · Create record",
+          "name": "E911 · Create record",
           "request": {
             "method": "POST",
             "header": [
@@ -563,7 +563,7 @@
           "response": []
         },
         {
-          "name": "e911 · Get record",
+          "name": "E911 · Get record",
           "request": {
             "method": "GET",
             "header": [],
@@ -590,7 +590,7 @@
           "response": []
         },
         {
-          "name": "e911 · Provision address on DN",
+          "name": "E911 · Provision address on DN",
           "request": {
             "method": "PUT",
             "header": [
@@ -631,7 +631,7 @@
           "response": []
         },
         {
-          "name": "e911 · Delete record",
+          "name": "E911 · Delete record",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -658,7 +658,7 @@
           "response": []
         },
         {
-          "name": "e911 · Validate address",
+          "name": "E911 · Validate address",
           "request": {
             "method": "POST",
             "header": [
@@ -884,7 +884,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/v2.2/inventory?tnMask=201&quantity=10&province=NJ&rateCenter=&lata=",
+              "raw": "{{baseUrl}}/v2.2/inventory?tnMask=201&quantity=10&province=NJ&rateCenter=&lata=224",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -919,7 +919,7 @@
                 },
                 {
                   "key": "lata",
-                  "value": "",
+                  "value": "224",
                   "description": "LATA code (query filter).",
                   "disabled": true
                 }
@@ -935,7 +935,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/v2.2/inventory/coverage?countBy=state&locState=NJ&city=&rcAbbre=&npa=201&lata=",
+              "raw": "{{baseUrl}}/v2.2/inventory/coverage?countBy=state&locState=NJ&city=&rcAbbre=&npa=201&lata=224",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -977,7 +977,7 @@
                 },
                 {
                   "key": "lata",
-                  "value": "",
+                  "value": "224",
                   "description": "Filter: LATA code.",
                   "disabled": true
                 }
@@ -1445,7 +1445,7 @@
             "description": "**Turn alert emails on or off**\nEmail the account when new messaging problems are found (at most one digest about every 20 hours).\n\nOperationId: `messagingHealthAlertsPut`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"enabled\": false\n}",
+              "raw": "{\n  \"enabled\": true\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1477,7 +1477,7 @@
                 "check"
               ]
             },
-            "description": "**Check a number now**\nLive check of one number: in service, messaging enabled, campaign approved, assigned to the campaign by the messaging provider, delivery failures in the last 24 hours, enablement in progress. Limited to 30 checks per hour per account.\n\nOperationId: `messagingHealthCheck`",
+            "description": "**Check a number now**\nLive check of one number: in service, messaging enabled, campaign approved, assigned to the campaign by the messaging provider, delivery failures in the last 24 hours, enablement in progress. Limited to 30 checks per hour per account.\n\n⚠️ Rate-limited (30/hr/account).\n\nOperationId: `messagingHealthCheck`",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"number\": \"2125550123\"\n}",
@@ -1510,7 +1510,7 @@
                 {
                   "key": "number",
                   "value": "",
-                  "description": "10-digit number on your account",
+                  "description": "10-digit number on your account (get 0).",
                   "disabled": false
                 }
               ]
