@@ -1,0 +1,40 @@
+meta {
+  name: Numbers numbersDirectoryListingPut
+  type: http
+  seq: 8
+}
+
+put {
+  url: {{baseUrl}}/v2.2/numbers/:number/directory-listing
+  body: json
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "type": "business",
+  "name": "Acme Corp",
+  "streetNumber": "100",
+  "streetName": "Broadway",
+  "streetType": "St",
+  "location": "Suite 900",
+  "city": "New York",
+  "state": "NY",
+  "zip": "10005"
+}
+}
+
+docs {
+**Add or replace the directory listing**
+Submits the listing. The change is accepted at once (202, status pending) and applied in the background; GET shows listed once it is published. It can take several business days to appear in directory assistance. Adding a listing requires an enabled account with a positive balance. A multi-line listing cannot be changed through the API.
+
+OperationId: `numbersDirectoryListingPut`
+}

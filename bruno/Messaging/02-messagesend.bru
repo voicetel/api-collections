@@ -16,19 +16,18 @@ headers {
 
 body:json {
 {
-  "text": "Reminder: appointment 3pm.",
-  "subject": "example",
-  "toNumber": "2015550123",
   "fromNumber": "2015550100",
+  "toNumber": "2015550123",
+  "text": "Reminder: appointment 3pm.",
   "mediaUrls": [
-    "example"
+    "https://example.com/photo.jpg"
   ]
 }
 }
 
 docs {
 **Send a message (SMS or MMS)**
-Sends a text message. If mediaUrls is provided it goes as MMS via the messaging network; otherwise SMS via the SMS routing routed by the source number's assigned network. Charges the account on success.
+Sends an SMS, or an MMS when mediaUrls is present, from fromNumber over the messaging route assigned to that number. text is required for SMS and optional for MMS (an MMS may be media only; MMS text is limited to 2048 characters). Every send that passes validation is charged, including sends the messaging network then rejects (502, 422); requests refused with 400, 401, 402, 403 or 409 are not charged. A 201 means the network accepted the message, not that it was delivered.
 
 Note: the JSON body uses the wire field names `fromNumber` and `toNumber`.
 

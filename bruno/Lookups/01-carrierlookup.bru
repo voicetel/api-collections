@@ -1,0 +1,22 @@
+meta {
+  name: Lookups carrierLookup
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/carrier/:number
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Carrier lookup**
+Returns the carrier and line type for the given 10-digit telephone number. Billed per lookup at the account's CNAM rate, only when a result is returned.
+
+OperationId: `carrierLookup`
+}

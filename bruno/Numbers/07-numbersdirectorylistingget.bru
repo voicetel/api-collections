@@ -1,0 +1,22 @@
+meta {
+  name: Numbers numbersDirectoryListingGet
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers/:number/directory-listing
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Get the directory listing**
+Returns the number's directory assistance (411) listing as it is currently published, and any change still being applied. status is listed, not_listed, pending (an add or change is being applied), removing, or unavailable (the number cannot be listed). eligible tells whether a listing can be added.
+
+OperationId: `numbersDirectoryListingGet`
+}

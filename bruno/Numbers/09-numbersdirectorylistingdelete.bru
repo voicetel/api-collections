@@ -1,0 +1,24 @@
+meta {
+  name: Numbers numbersDirectoryListingDelete
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/v2.2/numbers/:number/directory-listing
+  body: none
+  auth: inherit
+}
+
+params:path {
+  number: <number>
+}
+
+docs {
+**Remove the directory listing**
+Removes the listing (202, status removing, applied in the background), or cancels an add that has not been applied yet (status not_listed). Billing for the listing stops at once.
+
+Returns **204 No Content** on success — no response body.
+
+OperationId: `numbersDirectoryListingDelete`
+}

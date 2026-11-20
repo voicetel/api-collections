@@ -1,15 +1,15 @@
 {
   "info": {
     "_postman_id": "voicetel-api-v2-2",
-    "name": "VoiceTel API (v2.2.17)",
-    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.17** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints\n\n6 requests/hour per IP:\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `POST /v2.2/account/api-key`\n\n30 checks/hour per account:\n\n- `POST /v2.2/messaging/health/check`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
+    "name": "VoiceTel API (v2.2.20)",
+    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.20** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints\n\n6 requests/hour per IP:\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `POST /v2.2/account/api-key`\n\n30 checks/hour per account:\n\n- `POST /v2.2/messaging/health/check`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "contact": {
       "name": "VoiceTel",
       "email": "support@voicetel.com",
       "url": "https://voicetel.com"
     },
-    "version": "2.2.17"
+    "version": "2.2.20"
   },
   "auth": {
     "type": "bearer",
@@ -617,10 +617,10 @@
                 }
               ]
             },
-            "description": "**Provision e911 with known addressId**\nProvisions an e911 address using a pre-validated addressId from POST /e911/validate.\n\nOperationId: `e911ProvisionAddress`",
+            "description": "**Provision e911 with known addressId**\nProvisions an e911 address using a pre-validated addressId from POST /e911/validations.\n\nOperationId: `e911ProvisionAddress`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"addressid\": 123456,\n  \"callername\": \"JOHN DOE\"\n}",
+              "raw": "{\n  \"addressid\": \"123a45b678c9d012e3f45a67b890c123\",\n  \"callername\": \"JOHN DOE\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -712,7 +712,7 @@
                 "gateways"
               ]
             },
-            "description": "**List gateways**\nReturns all system route types and user-defined SIP gateways. System routes: 1=USER, 2=T30, 3=VOICE_BRIDGE, 4=DID, 5=T38, 6=VOICEML, 8=SDN.\n\nOperationId: `gatewaysList`"
+            "description": "**List gateways**\nReturns all system route types and user-defined SIP gateways. System routes: 1=USER, 2=T30, 3=VOICE_BRIDGE, 4=DID, 5=T38, 6=VOICEML, 8=SDN, 9=MOBILE.\n\nOperationId: `gatewaysList`"
           },
           "response": []
         },
@@ -1129,7 +1129,7 @@
                 }
               ]
             },
-            "description": "**Check whether a number can be ported in**\nChecks whether the number can be ported in. On portable=true the system sets an internal flag that lets a subsequent POST /v2.2/ports submit the port within an hour.\n\nv2.2.10: response includes `localRoutingNumber` and `rateCenterTier`.\n\nOperationId: `portAvailability`"
+            "description": "**Check whether a number can be ported in**\nChecks whether the number can be ported in. On portable=true the system sets an internal flag that lets a subsequent POST /v2.2/ports submit the port within an hour. Billed per lookup at the account's LRN rate, only when a result is returned.\n\nv2.2.10: response includes `localRoutingNumber` and `rateCenterTier`.\n\nOperationId: `portAvailability`"
           },
           "response": []
         }
@@ -1139,6 +1139,33 @@
       "name": "Lookups",
       "description": "On-demand CNAM and LRN dips. Billed per query.",
       "item": [
+        {
+          "name": "Lookups · carrierLookup",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/carrier/:number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "carrier",
+                ":number"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Carrier lookup**\nReturns the carrier and line type for the given 10-digit telephone number. Billed per lookup at the account's CNAM rate, only when a result is returned.\n\nOperationId: `carrierLookup`"
+          },
+          "response": []
+        },
         {
           "name": "Lookup · CNAM",
           "request": {
@@ -1270,10 +1297,10 @@
                 "messages"
               ]
             },
-            "description": "**Send a message (SMS or MMS)**\nSends a text message. If mediaUrls is provided it goes as MMS via the messaging network; otherwise SMS via the SMS routing routed by the source number's assigned network. Charges the account on success.\n\nNote: the JSON body uses the wire field names `fromNumber` and `toNumber`.\n\nOperationId: `messageSend`",
+            "description": "**Send a message (SMS or MMS)**\nSends an SMS, or an MMS when mediaUrls is present, from fromNumber over the messaging route assigned to that number. text is required for SMS and optional for MMS (an MMS may be media only; MMS text is limited to 2048 characters). Every send that passes validation is charged, including sends the messaging network then rejects (502, 422); requests refused with 400, 401, 402, 403 or 409 are not charged. A 201 means the network accepted the message, not that it was delivered.\n\nNote: the JSON body uses the wire field names `fromNumber` and `toNumber`.\n\nOperationId: `messageSend`",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"text\": \"Reminder: appointment 3pm.\",\n  \"subject\": \"example\",\n  \"toNumber\": \"2015550123\",\n  \"fromNumber\": \"2015550100\",\n  \"mediaUrls\": [\n    \"example\"\n  ]\n}",
+              "raw": "{\n  \"fromNumber\": \"2015550100\",\n  \"toNumber\": \"2015550123\",\n  \"text\": \"Reminder: appointment 3pm.\",\n  \"mediaUrls\": [\n    \"https://example.com/photo.jpg\"\n  ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1739,6 +1766,104 @@
                 }
               }
             }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · numbersDirectoryListingGet",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/directory-listing",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "directory-listing"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Get the directory listing**\nReturns the number's directory assistance (411) listing as it is currently published, and any change still being applied. status is listed, not_listed, pending (an add or change is being applied), removing, or unavailable (the number cannot be listed). eligible tells whether a listing can be added.\n\nOperationId: `numbersDirectoryListingGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · numbersDirectoryListingPut",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/directory-listing",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "directory-listing"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Add or replace the directory listing**\nSubmits the listing. The change is accepted at once (202, status pending) and applied in the background; GET shows listed once it is published. It can take several business days to appear in directory assistance. Adding a listing requires an enabled account with a positive balance. A multi-line listing cannot be changed through the API.\n\nOperationId: `numbersDirectoryListingPut`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"business\",\n  \"name\": \"Acme Corp\",\n  \"streetNumber\": \"100\",\n  \"streetName\": \"Broadway\",\n  \"streetType\": \"St\",\n  \"location\": \"Suite 900\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"zip\": \"10005\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Numbers · numbersDirectoryListingDelete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/:number/directory-listing",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                ":number",
+                "directory-listing"
+              ],
+              "variable": [
+                {
+                  "key": "number",
+                  "value": "<number>",
+                  "description": "Path parameter: number"
+                }
+              ]
+            },
+            "description": "**Remove the directory listing**\nRemoves the listing (202, status removing, applied in the background), or cancels an add that has not been applied yet (status not_listed). Billing for the listing stops at once.\n\nReturns **204 No Content** on success — no response body.\n\nOperationId: `numbersDirectoryListingDelete`"
           },
           "response": []
         },
@@ -2408,7 +2533,7 @@
                 "tickets"
               ]
             },
-            "description": "**List support tickets**\nReturns support tickets. Customers see only their own tickets. Administrators see all tickets.\n\nOperationId: `ticketsList`"
+            "description": "**List support tickets**\nReturns support tickets. Customers see only their own tickets. Administrators see all tickets.\n\nReturns every ticket filed under the account email address (all pages; spam excluded). Administrators receive the most recent 50 tickets across all accounts.\n\nOperationId: `ticketsList`"
           },
           "response": []
         },
