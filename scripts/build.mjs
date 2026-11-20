@@ -248,6 +248,13 @@ function bodyExampleFor(opId, operation) {
   if (opId === 'accountApiKey') {
     return { username: '{{username}}', password: '{{password}}' };
   }
+  // The v2.2.0 handler reads a JSON body on DELETE /v2.2/acl (same shape as
+  // POST). The spec documents it in the operation description rather than a
+  // requestBody node (DELETE-with-body is discouraged OpenAPI style), so the
+  // body is supplied here.
+  if (opId === 'aclDelete' && !operation.requestBody) {
+    return { acl: [{ cidr: '203.0.113.0/24' }] };
+  }
   return requestBodyExample(operation);
 }
 
