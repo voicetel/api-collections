@@ -1,0 +1,27 @@
+meta {
+  name: Fax faxesHistory
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v2.2/faxes?number=2015550123
+  body: none
+  auth: inherit
+}
+
+query {
+  number: 2015550123
+  ~from: 1795100000
+  ~to: 1795013600
+  ~limit: 50
+  ~cursor: cGl0LnN0b3Jl.8b1c0f2a5d4e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e
+  ~status: all
+}
+
+docs {
+**List fax history**
+The faxes sent from one of your fax numbers, newest first, with cursor paging. from and to are unix seconds (from is the newer edge); the default range is the last 24 hours. status filters by job state; active means not yet finished.
+
+OperationId: `faxesHistory`
+}

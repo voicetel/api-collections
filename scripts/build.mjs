@@ -148,6 +148,7 @@ const FOLDER_FOR_TAG = {
   ACL: 'ACL',
   Authentication: 'Authentication',
   E911: 'E911',
+  Fax: 'Fax',
   Gateways: 'Gateways',
   iNumbering: 'iNumbering',
   Lookups: 'Lookups',
@@ -157,6 +158,8 @@ const FOLDER_FOR_TAG = {
 };
 
 const FOLDER_DESCRIPTIONS = {
+  Fax:
+    'Send faxes from your fax-capable numbers and read their history and documents (PDF download). Idempotent per Idempotency-Key.',
   Account:
     'Account-wide endpoints — sign up, log in, retrieve CDRs and credits, manage sub-accounts, and view billing history.',
   ACL:
@@ -246,6 +249,28 @@ function bodyExampleFor(opId, operation) {
     return { username: '{{username}}', password: '{{password}}' };
   }
   return requestBodyExample(operation);
+}
+
+// Multipart form data (e.g. fax send): returns {fields, files} or null.
+function multipartFor(operation) {
+  const content = operation.requestBody?.content?.['multipart/form-data'];
+  if (!content) return null;
+  let schema = content.schema;
+  if (schema?.$ref) {
+    const name = schema.$ref.split('/').pop();
+    schema = spec.components?.schemas?.[name];
+  }
+  const props = schema?.properties || {};
+  const fields = [];
+  const files = [];
+  for (const [name, schema] of Object.entries(props)) {
+    if (schema?.items?.format === 'binary' || schema?.format === 'binary') {
+      files.push({ name, description: schema.description, multiple: schema.type === 'array' });
+    } else {
+      fields.push({ name, example: schema?.example ?? '', description: schema?.description });
+    }
+  }
+  return { fields, files };
 }
 
 function postmanUrl(pathTemplate, query) {
@@ -390,9 +415,10 @@ for (const { tag, opId, method, path, op } of operations) {
     process.exit(1);
   }
 
-  const bodyExample = ['POST', 'PUT', 'PATCH'].includes(method) ? bodyExampleFor(opId, op) : null;
+  const bodyExample = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method) ? bodyExampleFor(opId, op) : null;
   const hasBody = bodyExample !== null && bodyExample !== undefined;
-  const headers = postmanHeadersFor(op, hasBody);
+  const multipart = multipartFor(op);
+  const headers = postmanHeadersFor(op, hasBody && !multipart);
   const query = postmanQueryFor(op);
   const url = postmanUrl(path, query);
 
@@ -407,7 +433,19 @@ for (const { tag, opId, method, path, op } of operations) {
     response: [],
   };
 
-  if (hasBody) {
+  if (multipart) {
+    item.request.body = {
+      mode: 'formdata',
+      formdata: [
+        ...multipart.fields.map((f) => ({
+          key: f.name, value: String(f.example), type: 'text', description: f.description,
+        })),
+        ...multipart.files.map((f) => ({
+          key: f.name, value: [], type: 'file', description: f.description,
+        })),
+      ],
+    };
+  } else if (hasBody) {
     item.request.body = {
       mode: 'raw',
       raw: JSON.stringify(bodyExample, null, 2),
@@ -613,8 +651,9 @@ for (const { tag, opId, method, path, op } of operations) {
   const fileSlug = slugify(opId);
   const filePath = resolve(brunoRoot, folderName, `${String(seq).padStart(2, '0')}-${fileSlug}.bru`);
 
-  const bodyExample = ['POST', 'PUT', 'PATCH'].includes(method) ? bodyExampleFor(opId, op) : null;
+  const bodyExample = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method) ? bodyExampleFor(opId, op) : null;
   const hasBody = bodyExample !== null && bodyExample !== undefined;
+  const multipart = multipartFor(op);
   const headers = postmanHeadersFor(op, hasBody);
   const query = postmanQueryFor(op);
   const url = bruUrl(path, query);
@@ -637,7 +676,7 @@ for (const { tag, opId, method, path, op } of operations) {
   const methodBlockLines = [
     `${methodKey} {`,
     `  url: ${url}`,
-    `  body: ${hasBody ? 'json' : 'none'}`,
+    `  body: ${multipart ? 'multipart-form' : hasBody ? 'json' : 'none'}`,
     `  auth: ${opId === 'accountApiKey' ? 'none' : 'inherit'}`,
     '}',
   ];
@@ -656,7 +695,12 @@ for (const { tag, opId, method, path, op } of operations) {
   if (headerBlock) blocks.push(headerBlock);
 
   // body
-  if (hasBody) {
+  if (multipart) {
+    const lines = [];
+    for (const f of multipart.fields) lines.push(`  ${f.name}: ${f.example}`);
+    for (const f of multipart.files) lines.push(`  @${f.name}: ./document.pdf`);
+    blocks.push(`body:multipart-form {\n${lines.join('\n')}\n}`);
+  } else if (hasBody) {
     blocks.push(`body:json {\n${JSON.stringify(bodyExample, null, 2)}\n}`);
   }
 

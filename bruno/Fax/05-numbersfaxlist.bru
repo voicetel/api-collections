@@ -1,0 +1,18 @@
+meta {
+  name: Fax numbersFaxList
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/v2.2/numbers/fax
+  body: none
+  auth: inherit
+}
+
+docs {
+**List fax-capable numbers**
+Every number on the account that can send and receive faxes, with the email address each delivers to (the per-number fax destination, or the account email).
+
+OperationId: `numbersFaxList`
+}

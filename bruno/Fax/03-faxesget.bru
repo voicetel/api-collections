@@ -1,0 +1,22 @@
+meta {
+  name: Fax faxesGet
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/v2.2/faxes/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Get one fax**
+One fax job with its status, timestamps, attempts and documents. Poll until status is sent or failed.
+
+OperationId: `faxesGet`
+}

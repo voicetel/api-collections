@@ -2,7 +2,7 @@
 
 Official **Postman** and **Bruno** collections for the [VoiceTel REST API](https://voicetel.com/docs/api/v2.2/) — every endpoint, every quirk, pre-wired auth, click-and-go.
 
-![Version](https://img.shields.io/badge/version-2.2.20-blue)
+![Version](https://img.shields.io/badge/version-2.2.21-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Postman](https://img.shields.io/badge/Postman-Collection_v2.1-orange)
 ![Bruno](https://img.shields.io/badge/Bruno-supported-purple)
@@ -34,7 +34,7 @@ Official **Postman** and **Bruno** collections for the [VoiceTel REST API](https
 | `scripts/build.mjs` | Regenerates both collections from the spec. |
 | `scripts/validate.mjs` | Asserts every `operationId` in the spec is represented in both collections. |
 
-All **83 operations** across **10 resource families** are covered:
+All **88 operations** across **11 resource families** are covered:
 
 | Family | Endpoints | Highlights |
 |--------|-----------|-----------|

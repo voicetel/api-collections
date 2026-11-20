@@ -1,0 +1,28 @@
+meta {
+  name: Fax faxesSend
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v2.2/faxes
+  body: multipart-form
+  auth: inherit
+}
+
+headers {
+  Idempotency-Key: 123e4567-e89b-12d3-a456-426614174000
+}
+
+body:multipart-form {
+  fromNumber: 2015550123
+  toNumber: 2125550123
+  @documents: ./document.pdf
+}
+
+docs {
+**Send a fax**
+Submits a fax for delivery. The multipart form carries fromNumber, toNumber and one to ten documents (PDF, DOC or DOCX, checked by content; 8 MiB each and in total). Idempotency-Key is a client-generated UUID: resubmitting the same documents with the same key returns the original job instead of sending again. Requires an enabled account with a positive balance; rate-limited to 10 sends per minute per account.
+
+OperationId: `faxesSend`
+}

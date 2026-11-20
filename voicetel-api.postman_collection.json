@@ -1,15 +1,15 @@
 {
   "info": {
     "_postman_id": "voicetel-api-v2-2",
-    "name": "VoiceTel API (v2.2.20)",
-    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.20** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints\n\n6 requests/hour per IP:\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `POST /v2.2/account/api-key`\n\n30 checks/hour per account:\n\n- `POST /v2.2/messaging/health/check`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
+    "name": "VoiceTel API (v2.2.21)",
+    "description": "# VoiceTel API — Official Postman Collection\n\nVersion: **2.2.21** · Spec: OpenAPI 3.1 · Host: `https://api.voicetel.com`\n\nThis collection covers every endpoint of the VoiceTel REST API, grouped into the same 10 resource families used by the official SDKs (Python, Go, TypeScript, Java, PHP, C#, Scala, Swift, Lua).\n\n## Auth model\n\nEvery endpoint expects `Authorization: Bearer <apiKey>` **except** `POST /v2.2/account/api-key`, which exchanges a username/password for an API key. This collection has that endpoint configured with **No auth**; on a successful response a Postman test script automatically saves `data.apikey` into the `apiKey` collection variable, so the rest of the collection is wired up automatically.\n\n## Rate-limited endpoints\n\n6 requests/hour per IP:\n\n- `GET /v2.2/account`\n- `GET /v2.2/account/cdr`\n- `GET /v2.2/account/recurring-charges`\n- `POST /v2.2/account/api-key`\n\n30 checks/hour per account:\n\n- `POST /v2.2/messaging/health/check`\n\n## Documentation\n\n- API reference: https://voicetel.com/docs/api/v2.2/\n- Playground: https://voicetel.com/docs/api/v2.2/playground/\n- Get credentials: https://voicetel.com/docs/api/v2.2/credentials/",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "contact": {
       "name": "VoiceTel",
       "email": "support@voicetel.com",
       "url": "https://voicetel.com"
     },
-    "version": "2.2.20"
+    "version": "2.2.21"
   },
   "auth": {
     "type": "bearer",
@@ -423,26 +423,32 @@
           "name": "ACL · Remove entry",
           "request": {
             "method": "DELETE",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{baseUrl}}/v2.2/acl?cidrs=203.0.113.0%2F24",
+              "raw": "{{baseUrl}}/v2.2/acl",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "v2.2",
                 "acl"
-              ],
-              "query": [
-                {
-                  "key": "cidrs",
-                  "value": "203.0.113.0/24",
-                  "description": "Comma-separated list of CIDR blocks to remove from the ACL (e.g. 203.0.113.0/24,203.0.113.1/32).",
-                  "disabled": false
-                }
               ]
             },
-            "description": "**Remove IP ACL entries**\nRemoves one or more IPv4 CIDR blocks from the IP-ACL. CIDRs are passed as a comma-separated `cidrs` query string parameter.\n\nReturns **200 OK** with a JSON body (not 204).\n\nOperationId: `aclDelete`"
+            "description": "**Remove IP ACL entries**\nRemoves ACL entries. Accepts the same {acl: [{cidr}]} body as POST /v2.2/acl. Entries that do not exist fail individually.\n\nReturns **200 OK** with a JSON body (not 204).\n\nOperationId: `aclDelete`",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"acl\": [\n    {\n      \"cidr\": \"203.0.113.0/24\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           },
           "response": []
         }
@@ -688,6 +694,193 @@
                 }
               }
             }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Fax",
+      "description": "Send faxes from your fax-capable numbers and read their history and documents (PDF download). Idempotent per Idempotency-Key.",
+      "item": [
+        {
+          "name": "Fax · faxesHistory",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/faxes?number=2015550123&from=1795100000&to=1795013600&limit=50&cursor=cGl0LnN0b3Jl.8b1c0f2a5d4e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e&status=all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "faxes"
+              ],
+              "query": [
+                {
+                  "key": "number",
+                  "value": "2015550123",
+                  "description": "A fax number on the account whose history to read.",
+                  "disabled": false
+                },
+                {
+                  "key": "from",
+                  "value": "1795100000",
+                  "description": "Newer edge of the range, unix seconds. Defaults to now.",
+                  "disabled": true
+                },
+                {
+                  "key": "to",
+                  "value": "1795013600",
+                  "description": "Older edge of the range, unix seconds. Defaults to 24 hours ago.",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "50",
+                  "description": "Page size, 1 to 100.",
+                  "disabled": true
+                },
+                {
+                  "key": "cursor",
+                  "value": "cGl0LnN0b3Jl.8b1c0f2a5d4e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e",
+                  "description": "Paging cursor from a previous response nextCursor.",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "all",
+                  "description": "Filter by job state; active means not yet finished.",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "**List fax history**\nThe faxes sent from one of your fax numbers, newest first, with cursor paging. from and to are unix seconds (from is the newer edge); the default range is the last 24 hours. status filters by job state; active means not yet finished.\n\nOperationId: `faxesHistory`"
+          },
+          "response": []
+        },
+        {
+          "name": "Fax · faxesSend",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Idempotency-Key",
+                "value": "123e4567-e89b-12d3-a456-426614174000",
+                "description": "Client-generated UUID identifying this submission; the same documents with the same key do not send twice.",
+                "disabled": false
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/faxes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "faxes"
+              ]
+            },
+            "description": "**Send a fax**\nSubmits a fax for delivery. The multipart form carries fromNumber, toNumber and one to ten documents (PDF, DOC or DOCX, checked by content; 8 MiB each and in total). Idempotency-Key is a client-generated UUID: resubmitting the same documents with the same key returns the original job instead of sending again. Requires an enabled account with a positive balance; rate-limited to 10 sends per minute per account.\n\nOperationId: `faxesSend`",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "fromNumber",
+                  "value": "2015550123",
+                  "type": "text",
+                  "description": "Fax number on the account to send from, ten digits."
+                },
+                {
+                  "key": "toNumber",
+                  "value": "2125550123",
+                  "type": "text",
+                  "description": "Destination US or Canadian fax number, ten digits."
+                },
+                {
+                  "key": "documents",
+                  "value": [],
+                  "type": "file",
+                  "description": "One to ten documents; PDF, DOC or DOCX (checked by content, not extension); 8 MiB each and in total."
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fax · faxesGet",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/faxes/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "faxes",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Get one fax**\nOne fax job with its status, timestamps, attempts and documents. Poll until status is sent or failed.\n\nOperationId: `faxesGet`"
+          },
+          "response": []
+        },
+        {
+          "name": "Fax · faxesDocument",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/faxes/:id/document",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "faxes",
+                ":id",
+                "document"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "<id>",
+                  "description": "Path parameter: id"
+                }
+              ]
+            },
+            "description": "**Download the fax document**\nThe PDF rendering of the fax as an attachment. Available when the job reports documentAvailable true.\n\nOperationId: `faxesDocument`"
+          },
+          "response": []
+        },
+        {
+          "name": "Fax · numbersFaxList",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v2.2/numbers/fax",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v2.2",
+                "numbers",
+                "fax"
+              ]
+            },
+            "description": "**List fax-capable numbers**\nEvery number on the account that can send and receive faxes, with the email address each delivers to (the per-number fax destination, or the account email).\n\nOperationId: `numbersFaxList`"
           },
           "response": []
         }

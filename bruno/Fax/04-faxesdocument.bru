@@ -1,0 +1,22 @@
+meta {
+  name: Fax faxesDocument
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/v2.2/faxes/:id/document
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: <id>
+}
+
+docs {
+**Download the fax document**
+The PDF rendering of the fax as an attachment. Available when the job reports documentAvailable true.
+
+OperationId: `faxesDocument`
+}

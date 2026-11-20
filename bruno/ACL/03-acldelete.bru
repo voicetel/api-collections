@@ -5,18 +5,28 @@ meta {
 }
 
 delete {
-  url: {{baseUrl}}/v2.2/acl?cidrs=203.0.113.0/24
-  body: none
+  url: {{baseUrl}}/v2.2/acl
+  body: json
   auth: inherit
 }
 
-query {
-  cidrs: 203.0.113.0/24
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+{
+  "acl": [
+    {
+      "cidr": "203.0.113.0/24"
+    }
+  ]
+}
 }
 
 docs {
 **Remove IP ACL entries**
-Removes one or more IPv4 CIDR blocks from the IP-ACL. CIDRs are passed as a comma-separated `cidrs` query string parameter.
+Removes ACL entries. Accepts the same {acl: [{cidr}]} body as POST /v2.2/acl. Entries that do not exist fail individually.
 
 Returns **200 OK** with a JSON body (not 204).
 
